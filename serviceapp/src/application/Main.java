@@ -20,6 +20,10 @@ public class Main extends Application {
 				 System.out.println("Connected");
 			 }
 			 
+			 else {
+				 System.out.println("Not connected...");
+			 }
+			 
 			
 			BorderPane root = new BorderPane();
 			Scene scene = new Scene(root,400,400);
