@@ -1,1 +1,79 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/* Applique un fond au formulaire */
+.root {
+    -fx-background-color: #f5f5f5;
+    -fx-padding: 20px;
+}
+
+/* Style pour les labels */
+.label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+/* Style pour le label spécifique Login */
+#Login {
+    -fx-font-family: "Arial";
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4a6cd1; /* Couleur bleue pour le titre */
+    -fx-text-alignment: center;
+    -fx-padding: 30px 0;
+}
+
+/* Style pour les champs de texte (Email et Mot de passe) */
+.text-field, .password-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-pref-width: 200px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.2, 0, 2);
+    -fx-alignment: center-left; /* Alignement du texte à gauche */
+}
+
+/* Style pour le bouton */
+.button {
+    -fx-background-color: #7B9AFF;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-padding: 5px 15px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 5, 0.2, 0, 2);
+    -fx-transition: background-color 0.3s ease; /* Transition pour une animation fluide */
+}
+
+.button:hover {
+    -fx-background-color: #5F7EFF;
+}
+
+.button:pressed {
+    -fx-background-color: #4a6cd1; /* Couleur plus foncée lors du clic */
+    -fx-effect: none; /* Suppression de l'ombre lors du clic pour un effet plus net */
+}
+
+/* Style pour le label des erreurs */
+#error_label {
+    -fx-text-fill: red;
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial";
+}
+/* Style pour les labels des erreurs spécifiques */
+/* Style pour les labels des erreurs spécifiques */
+#email_error_label, #password_error_label {
+    -fx-text-fill: #ff0000; /* Rouge vif */
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial";
+    -fx-padding: 5px; /* Ajoute un espace interne autour du texte */
+    -fx-margin: 10px 0 0 0; /* Ajoute un espace externe en haut */
+}
+.error {
+    -fx-border-color: #ff0000; /* Rouge vif */
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
