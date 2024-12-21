@@ -97,10 +97,10 @@ public class LoginController<ActionEvent> {
             stmt.setString(2, password);
 
             ResultSet resultSet = stmt.executeQuery();
-            System.out.println(resultSet);
+            
             if (resultSet.next()) {
-                isValid = false; 
-                System.out.println("availible");
+                isValid = true; 
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
