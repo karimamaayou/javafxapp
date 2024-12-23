@@ -13,11 +13,11 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ClientTableController">
    <children>
-      <VBox prefHeight="400.0" prefWidth="152.0" style="-fx-background-color: #5687FD;">
+      <VBox prefHeight="400.0" prefWidth="144.0" style="-fx-background-color: #5687FD;">
          <children>
             <VBox prefHeight="205.0" prefWidth="123.0">
                <children>
-                  <ImageView fitHeight="131.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="125.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../OneDrive/Bureau/icons/WhatsApp%20Image%202024-12-21%20à%2012.32.10_31477b47.jpg" />
                      </image></ImageView>

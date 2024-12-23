@@ -43,8 +43,9 @@ public class ClientTableController {
     private TableColumn<Client, String> villeColumn;
     
     @FXML
-    void ajouterClient(ActionEvent event) {
+    void ajouterClient(ActionEvent event) { 
     	
+    
     	try {
             // Load the FXML file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("addClientsFrom.fxml"));
