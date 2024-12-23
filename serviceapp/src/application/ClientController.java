@@ -24,7 +24,8 @@ public class ClientController {
 
     @FXML
     private TableColumn<Client, String> prenomColumn;
-
+ 
+    
     @FXML
     private TableColumn<Client, String> telephoneColumn;
 
