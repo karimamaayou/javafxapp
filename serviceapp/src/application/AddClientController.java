@@ -9,8 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 
 public class AddClientController { 
-    @FXML
-    private Label addressErrorLabel;
+	  @FXML
+	    private Label villeErrorLabel;
 
     @FXML
     private Label emailErrorLabel;
@@ -75,6 +75,12 @@ public class AddClientController {
                 // Réinitialise les erreurs si une ville est sélectionnée
             }
         });
+        villeField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.trim().isEmpty()) {
+                villeErrorLabel.setText(""); // Efface l'erreur du label Ville
+                villeField.getStyleClass().remove("error"); // Supprime la classe "error" du champ
+            }
+        });
     }
 
    
@@ -88,7 +94,22 @@ public class AddClientController {
         	 firstNameField.getStyleClass().add("error"); // Ajoute la classe "error" au champ
              lastNameField.getStyleClass().add("error"); ; // Ajoute la classe "error" au champ
              hasError = true;
+        } else 
+        	
+        	if (firstNameField.getText().trim().isEmpty()) {
+            nameErrorLabel.setText("Veuillez entrer votre prénom.");
+            firstNameField.getStyleClass().add("error"); // Ajoute la classe "error" au champ
+            hasError = true;
+        }   else
+        	
+        	if (lastNameField.getText().trim().isEmpty()) {
+            nameErrorLabel.setText("Veuillez entrer votre nom.");
+            lastNameField.getStyleClass().add("error"); // Ajoute la classe "error" au champ
+            hasError = true;
         }
+        
+        
+        
         // Vérification du champ Email
         if (emailField.getText().trim().isEmpty()) {
             emailErrorLabel.setText("Veuillez entrer votre email.");
@@ -96,19 +117,11 @@ public class AddClientController {
             hasError = true;
         }
 
-        // Vérification du champ Prénom
-        if (firstNameField.getText().trim().isEmpty()) {
-            nameErrorLabel.setText("Veuillez entrer votre prénom.");
-            firstNameField.getStyleClass().add("error"); // Ajoute la classe "error" au champ
-            hasError = true;
-        }
+       
+       
 
         // Vérification du champ Nom
-        if (lastNameField.getText().trim().isEmpty()) {
-            nameErrorLabel.setText("Veuillez entrer votre nom.");
-            lastNameField.getStyleClass().add("error"); // Ajoute la classe "error" au champ
-            hasError = true;
-        }
+       
 
         // Vérification du champ Téléphone
         if (phoneField.getText().trim().isEmpty()) {
@@ -121,8 +134,15 @@ public class AddClientController {
         if (villeField.getSelectionModel().isEmpty()) {
             hasError = true;
         }
+        if (villeField.getSelectionModel().isEmpty()) {
+            villeErrorLabel.setText("Veuillez sélectionner une ville.");
+            villeField.getStyleClass().add("error"); // Ajoute la classe "error" au champ
+            hasError = true;
+        } 
+        
 
        
     }
+   
 
 }

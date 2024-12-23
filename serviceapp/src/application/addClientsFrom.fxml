@@ -59,8 +59,8 @@
                      <VBox>
                         <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Nom Complet" />
                         <HBox prefHeight="25.0" prefWidth="327.0" spacing="10.0">
-                           <TextField fx:id="firstNameField" prefHeight="25.0" prefWidth="165.0" promptText="First" />
-                           <TextField fx:id="lastNameField" prefHeight="25.0" prefWidth="177.0" promptText="Last" />
+                           <TextField fx:id="firstNameField" prefHeight="25.0" prefWidth="165.0" promptText="Prénom" />
+                           <TextField fx:id="lastNameField" prefHeight="25.0" prefWidth="177.0" promptText="Nom" />
                         </HBox>
                         <Label fx:id="nameErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
@@ -69,7 +69,7 @@
                      <VBox>
                         <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ville" />
                         <ChoiceBox fx:id="villeField" prefHeight="25.0" prefWidth="365.0" />
-                        <Label fx:id="addressErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
+                        <Label fx:id="villeErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
 
                      <!-- Numéro de téléphone -->
