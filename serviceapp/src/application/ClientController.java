@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -31,6 +32,11 @@ public class ClientController {
 
     @FXML
     private TableColumn<Client, String> villeColumn;
+    
+    @FXML
+    void ajouterClient(ActionEvent event) {
+
+    }
     
     
     
