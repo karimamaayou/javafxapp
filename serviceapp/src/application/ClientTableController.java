@@ -1,5 +1,6 @@
 package application;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,14 +9,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
-public class ClientController {
+public class ClientTableController {
 
     @FXML
     private TableView<Client> clientTable;
+    
+    @FXML
+    private Button ajouterButtonID;
 
     @FXML
     private TableColumn<Client,String> emailColumn;
@@ -35,6 +44,21 @@ public class ClientController {
     
     @FXML
     void ajouterClient(ActionEvent event) {
+    	
+    	try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("addClientsFrom.fxml"));
+            HBox root = loader.load();
+
+            // Get the current stage (window) and set the new scene
+            Stage stage = (Stage) ajouterButtonID.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    	
+    
+    	
 
     }
     

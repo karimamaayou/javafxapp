@@ -1,6 +1,6 @@
 package application;
 
-import java.sql.Connection;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,14 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Connexion à la base de données
-            Connection connection = MysqlConnection.getDBConnection();
-            if (connection != null) {
-                System.out.println("Connected");
-            } else {
-                System.out.println("Not connected...");
-            }
-
+          
             // Charger le fichier FXML avec un HBox comme racine
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
             HBox root = loader.load(); // Charger l'FXML dans un HBox
