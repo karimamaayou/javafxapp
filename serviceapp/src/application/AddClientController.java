@@ -46,7 +46,8 @@ public class AddClientController {
 	    	    
 	@FXML
 	
-	void viewClientsButton(ActionEvent event) {
+	void viewClientsButton(ActionEvent event) {  
+		
 		try {
             // Load the FXML file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("clientsTable.fxml"));
