@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ClientController">
+   <children>
+      <!-- Sidebar -->
+      <VBox prefHeight="700.0" prefWidth="144.0" style="-fx-background-color: #5687FD;">
+         <children>
+            <VBox prefHeight="227.0" prefWidth="191.0">
+               <children>
+                  <ImageView fitHeight="125.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../Desktop/WhatsApp%20Image%202024-11-23%20à%2019.16.21_69a6f61d.jpg" />
+                     </image>
+                  </ImageView>
+                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </Button>
+                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Prestataires" textFill="WHITE" />
+                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Reservations" textFill="WHITE" />
+                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Historique" textFill="WHITE" />
+               </children>
+            </VBox>
+            <VBox alignment="BOTTOM_LEFT" maxHeight="3000.0" prefHeight="444.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button alignment="TOP_LEFT" layoutY="-20.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Déconnexion" textFill="WHITE" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+
+      <!-- Main Content -->
+      <HBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
+         <children>
+            <!-- Form Section -->
+            <VBox alignment="CENTER" prefHeight="700.0" prefWidth="400.0" spacing="15.0">
+               <children>
+                  <Label prefHeight="57.0" prefWidth="153.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter de client">
+                     <font>
+                        <Font name="Bauhaus 93" size="1.0" />
+                     </font>
+                  </Label>
+                  <!-- Form Fields -->
+                  <VBox spacing="10.0">
+                     <!-- Employee Name -->
+                     <VBox>
+                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Nom Complet" />
+                        <HBox prefHeight="25.0" prefWidth="327.0" spacing="10.0">
+                           <TextField fx:id="firstNameField" prefHeight="25.0" prefWidth="165.0" promptText="First" />
+                           <TextField fx:id="lastNameField" prefHeight="25.0" prefWidth="177.0" promptText="Last" />
+                        </HBox>
+                        <Label fx:id="nameErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
+                     </VBox>
+
+                     <!-- Ville -->
+                     <VBox>
+                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ville" />
+                        <ChoiceBox fx:id="villeField" prefHeight="25.0" prefWidth="365.0" />
+                        <Label fx:id="addressErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
+                     </VBox>
+
+                     <!-- Numéro de téléphone -->
+                     <VBox>
+                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Numéro de téléphone" />
+                        <TextField fx:id="phoneField" prefWidth="320.0" promptText="Enter phone number" />
+                        <Label fx:id="phoneErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
+                     </VBox>
+
+                     <!-- Email Address -->
+                     <VBox>
+                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Email Address" />
+                        <TextField fx:id="emailField" prefWidth="320.0" promptText="Enter email address" />
+                        <Label fx:id="emailErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
+                     </VBox>
+                  </VBox>
+
+                  <!-- Submit Button -->
+                  <Button prefWidth="150.0" style="-fx-background-color: #5687FD; -fx-text-fill: white; -fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter" />
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</HBox>

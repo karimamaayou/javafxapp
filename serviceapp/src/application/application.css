@@ -76,4 +76,13 @@
     -fx-border-color: #ff0000; /* Rouge vif */
     -fx-border-width: 2px;
     -fx-border-radius: 5px;
-}/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+}
+/* style.css */
+#BladnaServices {
+    -fx-font-size: 18px;  /* Font size */
+    -fx-font-family: "Arial";  /* Font family */
+    -fx-font-weight: bold;  /* Bold text */
+    -fx-text-fill: #FFFFFF;  /* Text color (white) */
+    -fx-padding: 10px;  /* Padding around the text */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 2, 2);  /* Drop shadow effect */
+}
