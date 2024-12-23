@@ -6,17 +6,21 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ClientController">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #5687FD;">
+      <VBox prefHeight="400.0" prefWidth="152.0" style="-fx-background-color: #5687FD;">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="205.0" prefWidth="123.0">
                <children>
-                  <ImageView fitHeight="45.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="131.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../OneDrive/Bureau/icons/WhatsApp%20Image%202024-12-21%20à%2012.32.10_31477b47.jpg" />
+                     </image></ImageView>
                   <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
