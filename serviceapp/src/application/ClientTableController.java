@@ -64,6 +64,8 @@ public class ClientTableController {
     
     
     
+    
+    
     private ObservableList<Client> clientList = FXCollections.observableArrayList();
     
     public void initialize() {
