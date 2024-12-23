@@ -31,6 +31,8 @@ public class ClientController {
     @FXML
     private TableColumn<Client, String> villeColumn;
     
+    
+    
     private ObservableList<Client> clientList = FXCollections.observableArrayList();
     
     public void initialize() {

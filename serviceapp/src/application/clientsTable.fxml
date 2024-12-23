@@ -52,7 +52,7 @@
                   </HBox>
                   <HBox alignment="BOTTOM_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #5687FD;" text="Ajouter" textFill="WHITE">
+                        <Button fx:id="ajouterButtonID" mnemonicParsing="false" onAction="#ajouterClient" style="-fx-background-color: #5687FD;" text="Ajouter" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
