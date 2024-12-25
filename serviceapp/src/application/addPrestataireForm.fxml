@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -68,7 +68,7 @@
                      <!-- Ville -->
                      <VBox>
                         <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ville" />
-                        <ChoiceBox fx:id="villeField" prefHeight="25.0" prefWidth="357.0" />
+                        <ComboBox fx:id="villeField" prefHeight="25.0" prefWidth="364.0" />
                         <Label fx:id="villeErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
 
@@ -82,7 +82,7 @@
                      <!-- Métier -->
                      <VBox prefHeight="49.0" prefWidth="360.0">
                         <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Métier" />
-                        <ChoiceBox fx:id="MétierField" prefHeight="25.0" prefWidth="361.0" />
+                        <ComboBox fx:id="MétierField" prefHeight="25.0" prefWidth="376.0" />
                         <Label fx:id="métierErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
 

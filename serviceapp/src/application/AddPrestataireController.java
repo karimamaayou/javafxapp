@@ -1,6 +1,10 @@
 package application;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,14 +12,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class AddPrestataireController {
-	 @FXML
-	    private ChoiceBox<String> MétierField;
+	@FXML
+    private ComboBox<String> MétierField;
 
 	    @FXML
 	    private Label emailErrorLabel;
@@ -60,7 +65,7 @@ public class AddPrestataireController {
 	    private Label villeErrorLabel;
 
 	    @FXML
-	    private ChoiceBox<String> villeField;
+	    private ComboBox<String> villeField;
 	    @FXML
 	    private Label métierErrorLabel;
 
@@ -138,6 +143,9 @@ public class AddPrestataireController {
                 MétierField.getStyleClass().remove("error");
             }
         });
+        
+        loadMetiersFromDatabase();
+        loadVillesFromDatabase(); 
 
     }
 
@@ -213,10 +221,54 @@ public class AddPrestataireController {
             métierErrorLabel.setText("Veuillez sélectionner un métier.");
             MétierField.getStyleClass().add("error");
             hasError = true;
+        }}
+
+  // ajouté des Métier pour Métier en base de donne 
+    private void loadMetiersFromDatabase() {
+        try (Connection conn = MysqlConnection.getDBConnection()) {
+            String query = "SELECT metier FROM metier"; // Requête pour récupérer les métiers
+
+            try (PreparedStatement stmt = conn.prepareStatement(query);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                MétierField.getItems().clear(); // Vide la liste avant de la remplir avec les nouveaux éléments
+
+                while (rs.next()) {
+                    String metier = rs.getString("metier");
+                    MétierField.getItems().add(metier); // Ajoute chaque métier dans le ComboBox
+                    System.out.println("Métier ajouté : " + metier); // Affiche chaque métier ajouté
+                }
+
+                System.out.println("Métiers chargés avec succès.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Affiche l'erreur SQL si elle survient
         }
+    }
+ // ajouté des ville  pour les ville  en base de donne 
+    
+    private void loadVillesFromDatabase() {
+        try (Connection conn = MysqlConnection.getDBConnection()) {
+            String query = "SELECT ville FROM ville"; // Requête pour récupérer les villes
+
+            try (PreparedStatement stmt = conn.prepareStatement(query);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                villeField.getItems().clear(); // Vide la liste avant de la remplir avec les nouveaux éléments
+
+                while (rs.next()) {
+                    String ville = rs.getString("ville");
+                    villeField.getItems().add(ville); // Ajoute chaque ville dans le ComboBox
+                    System.out.println("Ville ajoutée : " + ville); // Affiche chaque ville ajoutée
+                }
+
+                System.out.println("Villes chargées avec succès.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Affiche l'erreur SQL si elle survient
+        }
+    }
 
     
     
-    
-    
-}}
+}
