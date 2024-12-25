@@ -14,7 +14,7 @@ public class Main extends Application {
         try {
           
             // Charger le fichier FXML avec un HBox comme racine
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginPage.fxml"));
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
            //  FXMLLoader loader = new FXMLLoader(getClass().getResource("addPrestataireForm.fxml"));
             HBox root = loader.load(); // Charger l'FXML dans un HBox
 
