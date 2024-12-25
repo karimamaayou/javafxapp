@@ -88,7 +88,7 @@ public class ClientTableController {
 
 		Connection connection = MysqlConnection.getDBConnection();
 
-		String sql = "SELECT * FROM `client`";
+		String sql = "Select client_id,nom,prenom,email,ville,telephone from client join ville using(ville_id);";
       
 		
 		try {
