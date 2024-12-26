@@ -1,6 +1,5 @@
 package application;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,18 +9,13 @@ import java.util.Map;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class AddClientController { 
-	@FXML
-	private Label villeErrorLabel;
+public class ModifierClientController {
 
     @FXML
     private Label emailErrorLabel;
@@ -31,13 +25,12 @@ public class AddClientController {
 
     @FXML
     private TextField firstNameField;
-    
-
-    @FXML
-    private Button viewClientsButtonID;
 
     @FXML
     private TextField lastNameField;
+
+    @FXML
+    private Button modifierButtonID;
 
     @FXML
     private Label nameErrorLabel;
@@ -47,22 +40,15 @@ public class AddClientController {
 
     @FXML
     private TextField phoneField;
-    
-    private Map<String, Integer> villeMap = new HashMap<>();// list pour affecter les id ou villes corespondant
-	    	    
-	@FXML
-	
-	void viewClientsButton(ActionEvent event) {  
-		
-		navigateToClientTable();
 
-	    }
+    @FXML
+    private Label villeErrorLabel;
+
     @FXML
     private ComboBox<String> villeField;
-
-    @FXML
-    private Button addButtonID;
-
+    
+    private Client selectedClient; // we will use this variable to hold the selectClient so we can use in the rest of the code
+    private Map<String, Integer> villeMap = new HashMap<>();// list pour affecter les id ou villes corespondant
     @FXML
     public void initialize() {
         // Écouteurs pour chaque champ TextField
@@ -105,14 +91,24 @@ public class AddClientController {
                 villeField.getStyleClass().remove("error"); // Supprime la classe "error" du champ
             }
         });
+    	
+    	loadMetiersFromDatabase();
+    }
+    
+    public void setSelectedClient(Client client) {
+        this.selectedClient = client;
         
-        loadMetiersFromDatabase();
+        
+        lastNameField.setText(client.getNom());
+        firstNameField.setText(client.getPrenom());
+        phoneField.setText(client.telephone);
+        emailField.setText(client.email);
+        
+       
     }
 
-   
     @FXML
-    private void addClient(ActionEvent event) {
-        
+    void modifierClient(ActionEvent event) {
         boolean hasError = false;
      // Vérification du champde le nom comple
         if (lastNameField.getText().trim().isEmpty()  && firstNameField.getText().trim().isEmpty()  ) {
@@ -166,40 +162,40 @@ public class AddClientController {
             hasError = true;
         } 
         
+        if (!hasError) {
+    	//update the selected client attibutes(data) with the new modified fields
+    	selectedClient.setNom(lastNameField.getText());
+    	selectedClient.setPrenom(firstNameField.getText());
+    	selectedClient.setTelephone(phoneField.getText());
+    	selectedClient.setEmail(emailField.getText());
+    	
+    	
+    	String villeName= villeField.getSelectionModel().getSelectedItem();
+    	int ville_id=villeMap.get(villeName);
+    	
+    	
+    	
+    	
+        // Update the database
+        try (Connection connection = MysqlConnection.getDBConnection()) {
+            String sql = "UPDATE client SET nom = ?, prenom = ?, email = ?,ville_id = ?, telephone = ? WHERE client_id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, selectedClient.getNom());
+            ps.setString(2, selectedClient.getPrenom());
+            ps.setString(3, selectedClient.getEmail());
+            ps.setInt(4, ville_id);
+            ps.setString(5, selectedClient.getTelephone());
+            ps.setInt(6, selectedClient.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
-		if (!hasError) {
-			
-			String nom = lastNameField.getText();
-	        String prenom = firstNameField.getText();
-	        String email = emailField.getText();
-	        String villeName = villeField.getSelectionModel().getSelectedItem(); // metter la ville selectioner dans la variable ville
-	        String telephone = phoneField.getText();
-	        
-	        int ville_id=villeMap.get(villeName); // recevoire l'id de la ville selectioner apartier du Map
+        // Close the window after updating
+        Stage stage = (Stage) firstNameField.getScene().getWindow();
+        stage.close();
 
-			try {
-
-				Connection connection = MysqlConnection.getDBConnection();
-
-				String sql = "INSERT INTO `client` (`nom`, `prenom`, `email`, `ville_id`, `telephone`) VALUES (?,?,?,?,?)";
-				PreparedStatement ps = connection.prepareStatement(sql);
-				ps.setString(1, nom);
-				ps.setString(2, prenom);
-				ps.setString(3, email);
-				ps.setInt(4, ville_id);
-				ps.setString(5, telephone);
-				ps.execute();
-
-				navigateToClientTable();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-        
-
-       
+        }
     }
     
     private void loadMetiersFromDatabase() {
@@ -225,20 +221,5 @@ public class AddClientController {
             e.printStackTrace(); // Affiche l'erreur SQL si elle survient
         }
     }
-   
-    private void navigateToClientTable() {
-    	try {
-            // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("clientsTable.fxml"));
-            HBox root = loader.load();
-
-            // Get the current stage (window) and set the new scene
-            Stage stage = (Stage) viewClientsButtonID.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ClientTableController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ClientTableController">
    <children>
       <VBox prefHeight="400.0" prefWidth="144.0" style="-fx-background-color: #5687FD;">
          <children>
@@ -21,7 +21,7 @@
                      <image>
                         <Image url="@../../../../../OneDrive/Bureau/icons/WhatsApp%20Image%202024-12-21%20à%2012.32.10_31477b47.jpg" />
                      </image></ImageView>
-                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
+                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: white;" text="Clients" textFill="#120cc9">
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
                      </cursor></Button>
@@ -43,12 +43,7 @@
                <children>
                   <HBox alignment="BOTTOM_LEFT" prefHeight="97.0" prefWidth="229.0">
                      <children>
-                        <TextField promptText="Recherche" />
-                        <Button mnemonicParsing="false" style="-fx-background-color: #5687FD;" text="Recherche" textFill="WHITE">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </Button>
+                        <TextField fx:id="searchField" promptText="Recherche" />
                      </children>
                      <HBox.margin>
                         <Insets left="1.0" />
@@ -61,7 +56,17 @@
                               <Insets left="5.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #50C878;" text="Exporter" textFill="WHITE">
+                        <Button fx:id="modifierButtonID" mnemonicParsing="false" onAction="#modifierClient" style="-fx-background-color: #5687FD;" text="Modifier" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="supprimerButtonID" mnemonicParsing="false" onAction="#supprimerClient" style="-fx-background-color: red;" text="Supprimer" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="exporterButtonID" mnemonicParsing="false" onAction="#exporter" style="-fx-background-color: #50C878;" text="Exporter" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
