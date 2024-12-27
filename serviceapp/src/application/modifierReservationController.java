@@ -20,6 +20,7 @@ public class modifierReservationController {
 
 	  @FXML
 	    private Button modifierButtonId;
+	  
 
     @FXML
     private ComboBox<String> clientField; //you need a comobox
