@@ -30,23 +30,23 @@
     -fx-font-size: 14px;
     -fx-font-family: "Arial";
     -fx-pref-width: 200px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.2, 0, 2);
+    
     -fx-alignment: center-left; /* Alignement du texte à gauche */
 }
 
-/* Style pour le bouton */
-.button {
+/* Style pour le bouton 
+/*.button {
     -fx-background-color: #7B9AFF;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-family: "Arial";
     -fx-padding: 5px 15px;
     -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 5, 0.2, 0, 2);
-    -fx-transition: background-color 0.3s ease; /* Transition pour une animation fluide */
+    -fx-background-radius: 5px;    -fx-transition: background-color 0.3s ease; /* Transition pour une animation fluide 
 }
+    -fx-cursor: hand; */
+    
+
 
 .button:hover {
     -fx-background-color: #5F7EFF;
@@ -72,11 +72,7 @@
     -fx-padding: 5px; /* Ajoute un espace interne autour du texte */
     -fx-margin: 10px 0 0 0; /* Ajoute un espace externe en haut */
 }
-.error {
-    -fx-border-color: #ff0000; /* Rouge vif */
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
-}
+
 /* style.css */
 #BladnaServices {
     -fx-font-size: 18px;  /* Font size */
@@ -84,5 +80,10 @@
     -fx-font-weight: bold;  /* Bold text */
     -fx-text-fill: #FFFFFF;  /* Text color (white) */
     -fx-padding: 10px;  /* Padding around the text */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 2, 2);  /* Drop shadow effect */
+    /* Drop shadow effect */
 }
+/*.error { */
+ /* -fx-border-color: #ff0000;*/    /* Rouge vif */
+   /* -fx-border-width: 2px;*/  
+  /* -fx-border-radius: 5px;*/  
+ /*} */

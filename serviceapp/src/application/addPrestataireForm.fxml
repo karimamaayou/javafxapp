@@ -25,12 +25,12 @@
                         <Image url="@../../../../../Desktop/WhatsApp%20Image%202024-11-23%20à%2019.16.21_69a6f61d.jpg" />
                      </image>
                   </ImageView>
-                  <Button fx:id="viewClientsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="82.0" prefWidth="126.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
+                  <Button fx:id="viewClientsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewClientsButton" prefHeight="82.0" prefWidth="126.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </Button>
-                  <Button fx:id="viewPrestatireButtonID" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Prestataires" textFill="WHITE" />
+                  <Button fx:id="viewPrestatireButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewPrestatireButton" prefHeight="25.0" prefWidth="144.0" style="-fx-background-color: ffffff;" text="Prestataires" textFill="#120cc9" />
                   <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Reservations" textFill="WHITE" />
                   <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="42.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Historique" textFill="WHITE" />
                </children>
@@ -86,6 +86,13 @@
                         <ComboBox fx:id="MétierField" prefHeight="25.0" prefWidth="376.0" />
                         <Label fx:id="métierErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
+                     <VBox prefHeight="71.0" prefWidth="360.0">
+                        <children>
+                           <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Description " />
+                           <TextField fx:id="descriptionField" promptText="description" />
+                           <Label fx:id="descriptionErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" />
+                        </children>
+                     </VBox>
 
                      <!-- Email Address -->
                      <VBox>
@@ -106,7 +113,7 @@
                   </VBox>
 
                   <!-- Submit Button -->
-                  <Button onAction="#addPrestataire" prefWidth="150.0" style="-fx-background-color: #5687FD; -fx-text-fill: white; -fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter" />
+                  <Button fx:id="addButtonID" onAction="#addPrestataire" prefWidth="150.0" style="-fx-background-color: #5687FD; -fx-text-fill: white; -fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
