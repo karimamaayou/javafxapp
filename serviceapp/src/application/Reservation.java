@@ -13,6 +13,7 @@ public class Reservation {
     int idReservtion;
     String statut;
     
+    
     String date_debutReservation;
     String date_finReservation;
     

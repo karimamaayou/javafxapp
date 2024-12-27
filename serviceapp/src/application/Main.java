@@ -14,13 +14,13 @@ public class Main extends Application {
         try {
           
             // Charger le fichier FXML avec un HBox comme racine
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("reservationTable.fxml"));
            //  FXMLLoader loader = new FXMLLoader(getClass().getResource("addPrestataireForm.fxml"));
             HBox root = loader.load(); // Charger l'FXML dans un HBox
 
             // Créer la scène et ajouter le HBox
-            Scene scene = new Scene(root, 400, 400); // Définir la taille de la scène
-            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm()); // Ajouter les styles CSS
+            Scene scene = new Scene(root, 900, 700); // Définir la taille de la scène
+         //   scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm()); // Ajouter les styles CSS
 
             // Définir la scène et afficher la fenêtre
             primaryStage.setScene(scene);

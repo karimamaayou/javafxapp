@@ -24,6 +24,7 @@ public class modifierReservationController {
 
     @FXML
     private ComboBox<String> clientField; //you need a comobox
+    
 
     private Map<String, Integer> clientMap = new HashMap<>();// with the comobox you need a Map list to link the id's with the clients
     private Map<String, Integer> prestataireMap = new HashMap<>();

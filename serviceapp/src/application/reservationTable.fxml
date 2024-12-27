@@ -46,12 +46,7 @@
                <children>
                   <HBox alignment="BOTTOM_LEFT" prefHeight="97.0" prefWidth="229.0">
                      <children>
-                        <TextField promptText="Recherche" />
-                        <Button mnemonicParsing="false" style="-fx-background-color: #5687FD;" text="Recherche" textFill="WHITE">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </Button>
+                        <TextField fx:id="searchTextFieldID" promptText="Recherche" />
                      </children>
                      <HBox.margin>
                         <Insets left="1.0" />
@@ -64,7 +59,17 @@
                               <Insets left="5.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="statutButtonID" layoutX="763.0" layoutY="241.0" mnemonicParsing="false" onAction="#changeStatut" style="-fx-background-color: #5687FD;" text="Statut" textFill="WHITE">
+                        <Button fx:id="modifierButtonID2" layoutX="655.0" layoutY="241.0" mnemonicParsing="false" onAction="#modifierReservation" style="-fx-background-color: #5687FD;" text="Modifier" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="supprimerButtonID" layoutX="710.0" layoutY="241.0" mnemonicParsing="false" onAction="#supprimerReservation" style="-fx-background-color: red;" text="Supprimer" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="statutButtonID" layoutX="763.0" layoutY="241.0" mnemonicParsing="false" onAction="#changeStatut" style="-fx-background-color: green;" text="Statut" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
@@ -84,7 +89,7 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </HBox>
-            <TableView fx:id="prestataireTable" prefHeight="253.0" prefWidth="495.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="reservationTable" prefHeight="253.0" prefWidth="495.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="nomCompleteClientColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="nom client" />
                   <TableColumn fx:id="telephoneClientColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="telephone" />
