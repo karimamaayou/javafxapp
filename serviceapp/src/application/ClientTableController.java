@@ -1,6 +1,11 @@
 package application;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ClientTableController {
@@ -36,7 +42,18 @@ public class ClientTableController {
     @FXML
     private Button exporterButtonID;
     @FXML
-    private TextField searchField;
+    private TextField searchField; 
+    @FXML
+    private Button logOutButtonID;
+    
+    @FXML
+    private Button viewClientsButtonID;
+
+    @FXML
+    private Button viewPrestatiaresButtonID;
+
+    @FXML
+    private Button viewReservationsButtonID;
 
 	@FXML
 	private TableColumn<Client, String> emailColumn;
@@ -54,6 +71,31 @@ public class ClientTableController {
 	private TableColumn<Client, String> villeColumn;
 
 	private ObservableList<Client> clientList = FXCollections.observableArrayList();
+	
+	public void initialize() {
+		
+
+		emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+		nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
+		prenomColumn.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+		telephoneColumn.setCellValueFactory(new PropertyValueFactory<>("telephone"));
+		villeColumn.setCellValueFactory(new PropertyValueFactory<>("ville"));
+
+		getAllClients();
+		
+		// Add a listener to the search field for reactive search
+	    searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+	        String searchQuery = newValue.toLowerCase().trim();
+	        if (searchQuery.isEmpty()) {
+	            // If the search field is empty, show all clients
+	            clientTable.setItems(clientList);
+	        } else {
+	            // Otherwise, filter the clients based on the search query
+	            filterClients(searchQuery);
+	        }
+	    });
+
+	}
 
 	@FXML
 	void ajouterClient(ActionEvent event) {
@@ -116,10 +158,57 @@ public class ClientTableController {
 
 	
 
-    @FXML
-    void exporter(ActionEvent event) {
+	@FXML
+	void exporter(ActionEvent event) {
+	    try {
+	        // Prepare data to send to the PHP script
+	        StringBuilder postData = new StringBuilder();
+	        for (Client client : clientList) {
+	            postData.append(client.getNom()).append(",");
+	            postData.append(client.getPrenom()).append(",");
+	            postData.append(client.getEmail()).append(",");
+	            postData.append(client.getTelephone()).append(",");
+	            postData.append(client.getVille()).append("\n");
+	        }
 
-    }
+	        // Create file chooser
+	        FileChooser fileChooser = new FileChooser();
+	        fileChooser.setTitle("Save Excel File");
+	        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+
+	        // Open file chooser to get the selected file
+	        java.io.File file = fileChooser.showSaveDialog(null);
+	        if (file != null) {
+	            URL url = new URL("http://localhost/javafx_export/export_excel.php");
+	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	            conn.setRequestMethod("POST");
+	            conn.setDoOutput(true);
+	            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+	            try (OutputStream os = conn.getOutputStream()) {
+	                os.write(postData.toString().getBytes("UTF-8"));
+	            }
+
+	            // Handle response and download the file
+	            try (InputStream in = conn.getInputStream();
+	                 FileOutputStream out = new FileOutputStream(file)) {
+	                byte[] buffer = new byte[1024];
+	                int bytesRead;
+	                while ((bytesRead = in.read(buffer)) != -1) {
+	                    out.write(buffer, 0, bytesRead);
+	                }
+	                System.out.println("Excel file downloaded successfully to " + file.getAbsolutePath());
+	            }
+	        } else {
+	            System.out.println("File save cancelled by user.");
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.err.println("Error during file export: " + e.getMessage());
+	    }
+	}
+
 
 
 	@FXML
@@ -161,30 +250,6 @@ public class ClientTableController {
 
 	}
 
-	public void initialize() {
-		
-
-		emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-		nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
-		prenomColumn.setCellValueFactory(new PropertyValueFactory<>("prenom"));
-		telephoneColumn.setCellValueFactory(new PropertyValueFactory<>("telephone"));
-		villeColumn.setCellValueFactory(new PropertyValueFactory<>("ville"));
-
-		getAllClients();
-		
-		// Add a listener to the search field for reactive search
-	    searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-	        String searchQuery = newValue.toLowerCase().trim();
-	        if (searchQuery.isEmpty()) {
-	            // If the search field is empty, show all clients
-	            clientTable.setItems(clientList);
-	        } else {
-	            // Otherwise, filter the clients based on the search query
-	            filterClients(searchQuery);
-	        }
-	    });
-
-	}
 
 	// get all the clients from the database
 	public void getAllClients() {
@@ -220,6 +285,42 @@ public class ClientTableController {
 		}
 	}
 	
+    @FXML
+    void logOut(ActionEvent event) {
+    	
+		Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+		confirmationAlert.setTitle("Se Deconnecter");
+		confirmationAlert.setHeaderText(null);
+		confirmationAlert.setContentText("Êtes-vous sûr de se deconnecter ?");
+
+		// Wait for the user to respond
+		Optional<ButtonType> result = confirmationAlert.showAndWait();
+        //if he chosed ok
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			
+
+			try {
+				// Load the FXML file
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
+				HBox root = loader.load();
+
+				// Get the current stage (window) and set the new scene
+				Stage stage = (Stage) logOutButtonID.getScene().getWindow();
+				
+				stage.setScene(new Scene(root));
+				stage.centerOnScreen();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		} 
+		//if he chosed cancel clear the selection in table
+		else {
+			// User cancelled, clear the selection
+			clientTable.getSelectionModel().clearSelection();
+		}
+
+    }
 	
 	private void filterClients(String searchQuery) {
 	    ObservableList<Client> filteredList = FXCollections.observableArrayList();
@@ -236,7 +337,30 @@ public class ClientTableController {
 	    clientTable.setItems(filteredList);
 	}
 
-	
+
+
+    @FXML
+    void viewClientsButton(ActionEvent event) {
+    	
+    	DBUtils.changeScene( event, "clientsTable.fxml");
+
+    }
+    
+    @FXML
+    void viewPrestatairesButton(ActionEvent event) {
+  
+    	DBUtils.changeScene( event, "prestataireTable.fxml");
+
+    }
+    
+    @FXML
+    void viewReservationsButton(ActionEvent event) {
+  
+    	DBUtils.changeScene( event, "reservationTable.fxml");
+
+    }
+
+ 
 	private void deleteClientFromDatabase(Client client) {
 		Connection connection = MysqlConnection.getDBConnection();
 		String sql = "DELETE FROM client WHERE client_id = ?";

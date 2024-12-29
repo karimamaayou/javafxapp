@@ -11,31 +11,33 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="721.0" prefWidth="1225.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ReservationTableController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ReservationTableController">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #5687FD;">
+      <VBox prefHeight="400.0" prefWidth="144.0" style="-fx-background-color: #5687FD;">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <ImageView fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="123.0" fitWidth="115.0">
+                  <ImageView fitHeight="125.0" fitWidth="138.0">
                      <image>
                         <Image url="@../../../../../OneDrive/Bureau/icons/WhatsApp%20Image%202024-12-21%20à%2012.32.10_31477b47.jpg" />
                      </image>
                   </ImageView>
-                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
+                  <Button fx:id="viewClientsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewClientsButton" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </Button>
-                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #5687FD;" text="Prestataires" textFill="WHITE" />
-                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: FFFFFF;" text="Reservations" textFill="#5687fd" />
+                  <Button fx:id="viewPrestatiaresButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewPrestatiaresButton" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: #5687FD;" text="Prestataires" textFill="WHITE" />
+                  <Button fx:id="viewReservationsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewReservationsButton" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: FFFFFF;" text="Reservations" textFill="#5687fd" />
                   <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Historique" textFill="WHITE" />
                </children>
             </VBox>
             <VBox alignment="BOTTOM_LEFT" maxHeight="3000.0" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button alignment="TOP_LEFT" layoutY="-20.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Déconnexion" textFill="WHITE" VBox.vgrow="ALWAYS" />
+                  <Button fx:id="logOutButtonID" alignment="BASELINE_LEFT" layoutY="-20.0" mnemonicParsing="false" onAction="#logOut" prefHeight="30.0" prefWidth="115.0" style="-fx-background-color: red;" text="Déconnexion" textFill="WHITE" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Button>
                </children>
             </VBox>
          </children>

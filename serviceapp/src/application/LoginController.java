@@ -71,7 +71,8 @@ public class LoginController<ActionEvent> {
         // Si aucun champ n'a d'erreur, valider les informations de connexion
         if (!hasError) {
             if (validateLogin(email, password)) { // Utilisation de email
-                DBUtils.changeScene( event, "clientsTable.fxml", "Page d'accueil", email, null); // Utilisation de email
+            	
+                DBUtils.changeScene( event, "clientsTable.fxml"); 
             } else {
                 error_label.setText("Email ou mot de passe incorrect.");
                 tf_email.getStyleClass().add("error"); // Ajout de la classe "error" au champ email
@@ -91,6 +92,7 @@ public class LoginController<ActionEvent> {
                 System.out.println("Failed to connect to the database.");
                 return false;
             }
+        	
             String sql = "SELECT * FROM user WHERE email = ? AND Password = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);

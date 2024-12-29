@@ -39,13 +39,22 @@ public class ReservationTableController {
 	private Button ajouterButtonID;
 	@FXML
 	private Button modifierButtonID2;
-
-	
-	
 	@FXML
 	private Button supprimerButtonID;
 	@FXML
 	private TextField searchTextFieldID;
+	
+    @FXML
+    private Button logOutButtonID;
+    
+    @FXML
+    private Button viewClientsButtonID;
+
+    @FXML
+    private Button viewPrestatiaresButtonID;
+
+    @FXML
+    private Button viewReservationsButtonID;
 
 	@FXML
 	private TableColumn<Reservation, String> dateDebutColumn;
@@ -323,6 +332,62 @@ public class ReservationTableController {
 		alert.showAndWait();
 	}
 
+    @FXML
+    void viewClientsButton(ActionEvent event) {
+    	
+    	DBUtils.changeScene( event, "clientsTable.fxml");
+
+    }
+    
+    @FXML
+    void viewPrestatiaresButton(ActionEvent event) {
+  
+    	DBUtils.changeScene( event, "prestataireTable.fxml");
+
+    }
+    
+    @FXML
+    void viewReservationsButton(ActionEvent event) {
+  
+    	DBUtils.changeScene( event, "reservationTable.fxml");
+
+    }	
+    @FXML
+    void logOut(ActionEvent event) {
+    	
+		Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+		confirmationAlert.setTitle("Se Deconnecter");
+		confirmationAlert.setHeaderText(null);
+		confirmationAlert.setContentText("Êtes-vous sûr de se deconnecter ?");
+
+		// Wait for the user to respond
+		Optional<ButtonType> result = confirmationAlert.showAndWait();
+        //if he chosed ok
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			
+
+			try {
+				// Load the FXML file
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
+				HBox root = loader.load();
+
+				// Get the current stage (window) and set the new scene
+				Stage stage = (Stage) logOutButtonID.getScene().getWindow();
+				
+				stage.setScene(new Scene(root));
+				stage.centerOnScreen();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		} 
+		//if he chosed cancel clear the selection in table
+		else {
+			// User cancelled, clear the selection
+			reservationTable.getSelectionModel().clearSelection();
+		}
+
+    }
 	@FXML
 	void modifierReservation(ActionEvent event) {
 		// Récupérer la réservation sélectionnée
