@@ -1,6 +1,11 @@
 package application;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class PrestataireTableController {
@@ -52,11 +58,10 @@ public class PrestataireTableController {
 	@FXML
 	private TableView<Prestataire> prestataireTable;
 
-	@FXML
-	private TableColumn<Prestataire, String> prix_maxColumn;
+	
 
 	@FXML
-	private TableColumn<Prestataire, String> prix_minColumn;
+	private TableColumn<Prestataire, String> tarifColumn;
 
 	@FXML
 	private Button supprimerButtonID;
@@ -80,6 +85,7 @@ public class PrestataireTableController {
 	private Button btn_recherche;
 
 	private ObservableList<Prestataire> prestatireList = FXCollections.observableArrayList();
+	
 	@FXML
 	private TableColumn<Prestataire, String> metierColumn;
 
@@ -95,15 +101,20 @@ public class PrestataireTableController {
 		telephonePrestataireColumn.setCellValueFactory(new PropertyValueFactory<>("telephone"));
 		villeColumn.setCellValueFactory(new PropertyValueFactory<>("ville"));
 		metierColumn.setCellValueFactory(new PropertyValueFactory<>("metier"));
-
 		descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 		disponibiliteColumn.setCellValueFactory(new PropertyValueFactory<>("disponibilite"));
-		prix_minColumn.setCellValueFactory(new PropertyValueFactory<>("prix_min"));
-		prix_maxColumn.setCellValueFactory(new PropertyValueFactory<>("prix_max"));
+		tarifColumn.setCellValueFactory(new PropertyValueFactory<>("tarif"));
+		
 
 		// Charger tous les prestataires
 		getAllPrestataire();
 
+		
+		
+		
+		if (tarifColumn == null) {
+		    System.out.println("tarifColumn est null");
+		}
 		// Ajouter un listener au champ de recherche
 		tf_recherche.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue.isEmpty()) {
@@ -122,7 +133,7 @@ public class PrestataireTableController {
 
 		// Requête SQL corrigée pour éviter les ambiguïtés et récupérer les noms des
 		// villes et des métiers
-		String sql = "SELECT p.prestataire_id, m.metier, p.nom, p.prenom, p.email, v.ville, p.telephone, p.description, p.disponibilite, p.prix_min, p.prix_max "
+		String sql = "SELECT p.prestataire_id, m.metier, p.nom, p.prenom, p.email, v.ville, p.telephone, p.description, p.disponibilite, p.tarif "
 				+ "FROM prestataire p " + "JOIN ville v ON p.ville_id = v.ville_id "
 				+ "JOIN metier m ON p.metier_id = m.metier_id";
 
@@ -131,7 +142,7 @@ public class PrestataireTableController {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet results = ps.executeQuery();
 
-			// Parcourir les résultats de la requête
+			// Parcourir les résultats de la requête    
 			while (results.next()) {
 				int id = results.getInt("prestataire_id");
 				String metier = results.getString("metier");
@@ -142,14 +153,13 @@ public class PrestataireTableController {
 				String telephone = results.getString("telephone");
 				String description = results.getString("description");
 				boolean disponibilite = results.getBoolean("disponibilite");
-				double prix_min = results.getDouble("prix_min");
-				double prix_max = results.getDouble("prix_max");
+				double tarif = results.getDouble("tarif");
+			
 
 				// Ajouter l'objet Prestataire à la liste
 				prestatireList.add(new Prestataire(id, metier, nom, prenom, email, ville, telephone, description,
-						disponibilite  ? "Disponible":"Indisponible",
-						
-						prix_min, prix_max));
+						disponibilite  ? "Disponible":"Indisponible",tarif
+					));
 			}
 
 			// Mettre à jour la TableView avec la liste des prestataires
@@ -179,15 +189,17 @@ public class PrestataireTableController {
 		Connection connection = MysqlConnection.getDBConnection();
 
 		String sql = "SELECT p.prestataire_id, m.metier, p.nom, p.prenom, p.email, v.ville, "
-				+ "p.telephone, p.description, p.disponibilite, p.prix_min, p.prix_max " + "FROM prestataire p "
-				+ "JOIN ville v ON p.ville_id = v.ville_id " + "JOIN metier m ON p.metier_id = m.metier_id "
+				+ "p.telephone, p.description, p.disponibilite , p.tarif " 
+				+ "FROM prestataire p "
+				+ "JOIN ville v ON p.ville_id = v.ville_id "
+				+ "JOIN metier m ON p.metier_id = m.metier_id "
 				+ "WHERE m.metier LIKE ? OR p.nom LIKE ? OR p.prenom LIKE ? OR p.email LIKE ? "
 				+ "OR v.ville LIKE ? OR p.telephone LIKE ? OR p.description LIKE ? "
-				+ "OR p.disponibilite LIKE ? OR p.prix_min LIKE ? OR p.prix_max LIKE ?";
+				+ "OR p.disponibilite LIKE ? OR p.tarif LIKE ?";
 
 		try (PreparedStatement ps = connection.prepareStatement(sql)) {
 			String searchPattern = "%" + searchText + "%";
-			for (int i = 1; i <= 10; i++) {
+			for (int i = 1; i <= 9; i++) {
 				ps.setString(i, searchPattern);
 			}
 
@@ -202,11 +214,11 @@ public class PrestataireTableController {
 				String telephone = results.getString("telephone");
 				String description = results.getString("description");
 				Boolean  disponibilite = results.getBoolean("disponibilite");
-				double prix_min = results.getDouble("prix_min");
-				double prix_max = results.getDouble("prix_max");
+				double tarif = results.getDouble("tarif");
+				
 
 				prestatireList.add(new Prestataire(id, metier, nom, prenom, email, ville, telephone, description,
-						disponibilite ? "Disponible":"Indisponible", prix_min, prix_max));
+					    disponibilite ? "Disponible" : "Indisponible", tarif));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -293,7 +305,7 @@ public class PrestataireTableController {
 
     }
 
-	@FXML
+    @FXML
 	void supprimerPrestataire(ActionEvent event) {
 		// Récupérer le prestataire sélectionné dans la table
 		Prestataire selectedPrestataire = prestataireTable.getSelectionModel().getSelectedItem();
@@ -407,5 +419,60 @@ public class PrestataireTableController {
 			errorAlert.showAndWait();
 		}
 	}
+	@FXML
+	void exporter(ActionEvent event) {
+	    try {
+	        // Préparer les données à envoyer
+	        StringBuilder postData = new StringBuilder();
+	        for (Prestataire prestataire : prestatireList) {
+	            postData.append(prestataire.getNom()).append(",");
+	            postData.append(prestataire.getPrenom()).append(",");
+	            postData.append(prestataire.getEmail()).append(",");
+	            postData.append(prestataire.getTelephone()).append(",");
+	            postData.append(prestataire.getVille()).append(",");
+	            postData.append(prestataire.getMetier()).append(",");
+	            postData.append(prestataire.getDescription()).append(",");
+	            postData.append(prestataire.getDisponibilite()).append(",");
+	            postData.append(prestataire.getTarif()).append("\n");
+	        }
+
+	        // Sélectionner où sauvegarder le fichier via FileChooser
+	        FileChooser fileChooser = new FileChooser();
+	        fileChooser.setTitle("Enregistrer le fichier Excel");
+	        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
+	        java.io.File file = fileChooser.showSaveDialog(null);
+
+	        if (file != null) {
+	            // Envoyer les données au script PHP
+	        	 URL url = new URL("http://localhost/javafx_export/export_prestataires.php");
+	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	            conn.setRequestMethod("POST");
+	            conn.setDoOutput(true);
+	            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+	            // Envoyer les données
+	            try (OutputStream os = conn.getOutputStream()) {
+	                os.write(postData.toString().getBytes("UTF-8"));
+	            }
+
+	            // Lire la réponse et sauvegarder le fichier Excel
+	            try (InputStream in = conn.getInputStream();
+	                 FileOutputStream out = new FileOutputStream(file)) {
+	                byte[] buffer = new byte[1024];
+	                int bytesRead;
+	                while ((bytesRead = in.read(buffer)) != -1) {
+	                    out.write(buffer, 0, bytesRead);
+	                }
+	                System.out.println("Fichier Excel exporté avec succès : " + file.getAbsolutePath());
+	            }
+	        } else {
+	            System.out.println("L'utilisateur a annulé l'enregistrement.");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.err.println("Erreur lors de l'exportation : " + e.getMessage());
+	    }
+	}
+
 
 }

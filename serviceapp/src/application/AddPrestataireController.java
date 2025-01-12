@@ -37,11 +37,10 @@ public class AddPrestataireController {
 	@FXML
 	private TextField lastNameField;
 
-	@FXML
-	private TextField maxPriceField;
+	
 
 	@FXML
-	private TextField minPriceField;
+	private TextField tarifField;
 
 	@FXML
 	private Label nameErrorLabel;
@@ -87,99 +86,80 @@ public class AddPrestataireController {
 	    String lastName = lastNameField.getText();
 	    String email = emailField.getText();
 	    String phone = phoneField.getText();
-	    String minPriceText = minPriceField.getText();
-	    String maxPriceText = maxPriceField.getText();
 	    String métier = MétierField.getValue();
 	    String ville = villeField.getValue();
 	    String description = descriptionField.getText();
-	  
+	    double tarif = Double.parseDouble(tarifField.getText());
 
 	    boolean isValid = true;
 	    // Vérification des prix
-	    double minPrice = 0, maxPrice = 0;
-	    try {
-	        minPrice = Double.parseDouble(minPriceText);
-	        maxPrice = Double.parseDouble(maxPriceText);
-	        
-	        // Vérification des prix négatifs
-	        if (minPrice < 0 || maxPrice < 0) {
-	            priceErrorLabel.setText("Les prix ne peuvent pas être négatifs.");
-	            isValid = false;
-	        } 
-	        // Vérification du prix minimum supérieur au prix maximum
-	        else if (minPrice > maxPrice) {
-	            priceErrorLabel.setText("Le prix minimum doit être inférieur au prix maximum.");
-	            isValid = false;
-	        } 
-	        // Si les prix sont valides
-	        else {
-	            priceErrorLabel.setText("");
-	        }
-
-	    } catch (NumberFormatException e) {
-	        priceErrorLabel.setText("Les prix doivent être des nombres.");
-	        isValid = false;
-	    }
+	  
 
 	    // Si tous les champs sont valides, on ajoute le prestataire à la base de données
 	    if (isValid) {
-	        addPrestataireToDatabase(firstName, lastName, email, phone, minPrice, maxPrice, métier, ville, description);
+	        addPrestataireToDatabase(firstName, lastName, email, phone, tarif, métier, ville, description);
 	    }
 	}
 
 
-	private void addPrestataireToDatabase(String firstName, String lastName, String email, String phone,
-			double minPrice, double maxPrice, String métier, String ville, String description) {
-		try (Connection connection = MysqlConnection.getDBConnection()) {
+	private void addPrestataireToDatabase(String firstName, String lastName, String email, String phone, double tarif, String métier, String ville, String description)  {
+	    try (Connection connection = MysqlConnection.getDBConnection()) {
 
-			// Récupérer l'ID du métier
-			int metierId = getMetierId(connection, métier);
-			if (metierId == -1) {
-				showAlert("Erreur", "Le métier sélectionné est invalide.");
-				return;
-			}
+	        // Récupérer l'ID du métier
+	        int metierId = getMetierId(connection, métier);
+	        if (metierId == -1) {
+	            return;
+	        }
 
-			// Récupérer l'ID de la ville
-			int villeId = getVilleId(connection, ville);
-			if (villeId == -1) {
-				showAlert("Erreur", "La ville sélectionnée est invalide.");
-				return;
-			}
+	        // Récupérer l'ID de la ville
+	        int villeId = getVilleId(connection, ville);
+	        if (villeId == -1) {
+	            return;
+	        }
 
-			String sql = "INSERT INTO prestataire (metier_id, nom, prenom, email, telephone, ville_id, description, prix_min, prix_max) VALUES (?,  ?, ?, ?, ?, ?, ?, ?, ?)";
+	        // Requête SQL pour insérer le prestataire dans la base de données
+	        String sql = "INSERT INTO prestataire (metier_id, nom, prenom, email, telephone, ville_id, description, tarif, disponibilite) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-			try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-				// Remplir les paramètres de la requête SQL
-				stmt.setInt(1, metierId); // ID du métier
-				stmt.setString(2, lastName); // Nom
-				stmt.setString(3, firstName); // Prénom
-				stmt.setString(4, email); // Email
-				stmt.setString(5, phone); // Téléphone
-				stmt.setInt(6, villeId); // ID de la ville
-				
-				stmt.setString(7, description); // Description
-				stmt.setDouble(8, minPrice); // Prix minimum
-				stmt.setDouble(9, maxPrice); // Prix maximum
+	        // Préparer la requête SQL
+	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	            // Remplir les paramètres de la requête SQL
+	            stmt.setInt(1, metierId); // ID du métier
+	            stmt.setString(2, lastName); // Nom
+	            stmt.setString(3, firstName); // Prénom
+	            stmt.setString(4, email); // Email
+	            stmt.setString(5, phone); // Téléphone
+	            stmt.setInt(6, villeId); // ID de la ville
+	            stmt.setString(7, description); // Description
+	            stmt.setDouble(8, tarif); // Tarif
+	            stmt.setInt(9, 1); // Disponibilité (1 pour disponible, 0 pour non disponible)
 
-				stmt.executeUpdate();
-				try {
-					// Load the FXML file
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("prestataireTable.fxml"));
-					HBox root = loader.load();
-					// Get the current stage (window) and set the new scene
-					Stage stage = (Stage) viewPrestatireButtonID.getScene().getWindow();
-					stage.setScene(new Scene(root));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				showAlert("Erreur", "Une erreur s'est produite lors de l'ajout du prestataire.");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			showAlert("Erreur", "les inforamtion sont pas insere ");
-		}
+	            // Exécuter la requête
+	            stmt.executeUpdate();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    setSceneToPrestataireTable();
+	}
+
+		
+	private void setSceneToPrestataireTable() {
+	    try {
+	        // Charger le fichier FXML de la table des prestataires
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("prestataireTable.fxml"));
+	        HBox root = loader.load();
+
+	        // Obtenir la scène actuelle et la changer avec la nouvelle scène
+	        Stage stage = (Stage) viewPrestatireButtonID.getScene().getWindow();
+	        stage.setScene(new Scene(root));
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        showAlert("Erreur", "Une erreur s'est produite lors du changement de scène.");
+	    }
 	}
 
 	// Méthode pour obtenir l'ID du métier
@@ -264,19 +244,15 @@ public class AddPrestataireController {
 		});
 
 		// On peut ajouter des écouteurs supplémentaires pour les champs min/max price
-		minPriceField.textProperty().addListener((observable, oldValue, newValue) -> {
+		tarifField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
 				priceErrorLabel.setText(""); // Efface l'erreur du label Prix
-				minPriceField.getStyleClass().remove("error");
+				tarifField.getStyleClass().remove("error");
 			}
 		});
 
-		maxPriceField.textProperty().addListener((observable, oldValue, newValue) -> {
-			if (!newValue.isEmpty()) {
-				priceErrorLabel.setText(""); // Efface l'erreur du label Prix
-				maxPriceField.getStyleClass().remove("error");
-			}
-		});
+		
+		
 
 		villeField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue == null || newValue.trim().isEmpty()) {
@@ -324,44 +300,52 @@ public class AddPrestataireController {
 			hasError = true;
 		}
 
-		// Vérification du champ Email
-		if (emailField.getText().trim().isEmpty()) {
-			emailErrorLabel.setText("Veuillez entrer votre email.");
-			emailField.getStyleClass().add("error");
-			hasError = true;
+		// Vérification du champ Email avec regex
+		String email = emailField.getText().trim();
+		String emailRegex = "^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$"; // Regex pour valider un email
+
+		if (email.isEmpty()) {
+		    emailErrorLabel.setText("Veuillez entrer votre email.");
+		    emailField.getStyleClass().add("error");
+		    hasError = true;
+		} else if (!email.matches(emailRegex)) {
+		    // Vérifie si l'email est valide avec regex
+		    emailErrorLabel.setText("Veuillez entrer un email valide (exemple : nom@domaine.com).");
+		    emailField.getStyleClass().add("error");
+		    hasError = true;
+		} else {
+		    // Si l'email est valide
+		    emailErrorLabel.setText(""); // Pas d'erreur
+		    emailField.getStyleClass().remove("error");
 		}
+
 
 		// Vérification du champ Téléphone
 		if (phoneField.getText().trim().isEmpty()) {
-			phoneErrorLabel.setText("Veuillez entrer votre numéro de téléphone.");
-			phoneField.getStyleClass().add("error");
-			hasError = true;
+		    phoneErrorLabel.setText("Veuillez entrer votre numéro de téléphone.");
+		    phoneField.getStyleClass().add("error");
+		    hasError = true;
+		} else if (!phoneField.getText().matches("\\d{10}")) { 
+		    // Vérifie que le numéro contient exactement 10 chiffres
+		    phoneErrorLabel.setText("Le numéro de téléphone doit contenir exactement 10 chiffres.");
+		    phoneField.getStyleClass().add("error");
+		    hasError = true;
+		} else {
+		    // Si tout est correct
+		    phoneErrorLabel.setText(""); // Pas d'erreur
+		    phoneField.getStyleClass().remove("error");
 		}
-
-		if (minPriceField.getText().trim().isEmpty() && maxPriceField.getText().trim().isEmpty()) {
-			priceErrorLabel.setText("Veuillez entrer un prix .");
-			minPriceField.getStyleClass().add("error");
-			maxPriceField.getStyleClass().add("error");
-			hasError = true;
-			
-			   
-			    
 			    
 			
-		} else
+	
 		// Vérification du champ Prix minimum
-		if (minPriceField.getText().trim().isEmpty() ) {
-			priceErrorLabel.setText("Veuillez entrer un prix minimum.");
-			minPriceField.getStyleClass().add("error");
+		if (tarifField.getText().trim().isEmpty() ) {
+			priceErrorLabel.setText("Veuillez entrer la tarif .");
+			tarifField.getStyleClass().add("error");
 			hasError = true;
 		} else
 
-		// Vérification du champ Prix maximum
-		if (maxPriceField.getText().trim().isEmpty()) {
-			priceErrorLabel.setText("Veuillez entrer un prix maximum.");
-			maxPriceField.getStyleClass().add("error");
-			hasError = true;
-		}
+		
 	
 		
 		
@@ -382,7 +366,7 @@ public class AddPrestataireController {
 		}
 		
 		if (descriptionField.getText().trim().isEmpty()) {
-			descriptionErrorLabel.setText("Veuillez sélectionner une ville.");
+			descriptionErrorLabel.setText("Veuillez sélectionner une description.");
 		}
 	
 		

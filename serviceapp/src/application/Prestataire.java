@@ -12,13 +12,13 @@ public class Prestataire {
     String telephone;
     String description;
     String disponibilite;
-    double prix_min;
-    double prix_max;
+    double tarif ;
+    
 
     
 
         // Constructeur
-        public Prestataire(int id, String metier, String nom, String prenom, String email, String ville, String telephone, String description, String disponibilite, double prix_min, double prix_max) {
+        public Prestataire(int id, String metier, String nom, String prenom, String email, String ville, String telephone, String description, String disponibilite, double tarif) {
             this.id = id;
             this.metier = metier;
             this.nom = nom;
@@ -28,8 +28,8 @@ public class Prestataire {
             this.telephone = telephone;
             this.description = description;
             this.disponibilite = disponibilite;
-            this.prix_min = prix_min;
-            this.prix_max = prix_max;
+           
+            this.tarif = tarif;
         }
 
        
@@ -37,15 +37,15 @@ public class Prestataire {
   
 
         // Constructeur
-        public Prestataire(String nom, String prenom, String email, String telephone, String description, String disponibilite, double prix_min, double prix_max) {
+        public Prestataire(String nom, String prenom, String email, String telephone, String description, String disponibilite, double tarif) {
             this.nom = nom;
             this.prenom = prenom;
             this.email = email;
             this.telephone = telephone;
             this.description = description;
             this.disponibilite = disponibilite;
-            this.prix_min = prix_min;
-            this.prix_max = prix_max;
+            this.tarif = tarif;
+            
         }
 
       
@@ -55,10 +55,18 @@ public class Prestataire {
     public int getId() {
         return id;
     }
-    public String getMetier() { return metier; }
-    public String getVille() { return ville; }
-    public void setMetier(String metier ){  this.metier = metier; }
-    public void setVille(String ville ){  this.ville = ville; }
+    public String getMetier() {
+    	return metier; 
+    	}
+    public String getVille() { 
+    	return ville;
+    	}
+    public void setMetier(String metier ){
+    	this.metier = metier;
+    	}
+    public void setVille(String ville ){ 
+    	this.ville = ville;
+    	}
     public void setId(int id) {
         this.id = id;
     }
@@ -127,19 +135,13 @@ public class Prestataire {
         this.disponibilite = disponibilite;
     }
 
-    public double getPrix_min() {
-        return prix_min;
+    public double getTarif() {
+        return tarif;
     }
 
-    public void setPrix_min(double prix_min) {
-        this.prix_min = prix_min;
+    public void setTarif(double tarif) {
+        this.tarif = tarif;
     }
 
-    public double getPrix_max() {
-        return prix_max;
-    }
-
-    public void setPrix_max(double prix_max) {
-        this.prix_max = prix_max;
-    }
+  
 }

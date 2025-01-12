@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -12,7 +11,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <HBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AddPrestataireController">
    <children>
@@ -104,10 +102,9 @@
 
                      <!-- Prix (min et max côte à côte) -->
                      <VBox>
-                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Prix" />
+                        <Label prefHeight="20.0" prefWidth="46.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="tarif " />
                         <HBox spacing="10.0">
-                           <TextField fx:id="minPriceField" prefHeight="25.0" prefWidth="163.0" promptText="Prix min" />
-                           <TextField fx:id="maxPriceField" prefHeight="25.0" prefWidth="177.0" promptText="Prix max" />
+                           <TextField fx:id="tarifField" prefHeight="25.0" prefWidth="371.0" promptText="tarif" />
                         </HBox>
                         <Label fx:id="priceErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>

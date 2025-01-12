@@ -38,11 +38,9 @@ public class ModifierPrestataireController {
     @FXML
     private TextField lastNameField;
 
-    @FXML
-    private TextField maxPriceField;
 
     @FXML
-    private TextField minPriceField;
+    private TextField tarifField;
 
     @FXML
     private Label métierErrorLabel;
@@ -99,8 +97,7 @@ public class ModifierPrestataireController {
         firstNameField.textProperty().addListener((observable, oldValue, newValue) -> clearError(nameErrorLabel, firstNameField));
         lastNameField.textProperty().addListener((observable, oldValue, newValue) -> clearError(nameErrorLabel, lastNameField));
         phoneField.textProperty().addListener((observable, oldValue, newValue) -> clearError(phoneErrorLabel, phoneField));
-        minPriceField.textProperty().addListener((observable, oldValue, newValue) -> clearError(priceErrorLabel, minPriceField));
-        maxPriceField.textProperty().addListener((observable, oldValue, newValue) -> clearError(priceErrorLabel, maxPriceField));
+        tarifField.textProperty().addListener((observable, oldValue, newValue) -> clearError(priceErrorLabel, tarifField));
         villeField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> clearError(villeErrorLabel, villeField));
         MétierField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> clearError(métierErrorLabel, MétierField));
     }
@@ -123,8 +120,8 @@ public class ModifierPrestataireController {
             hasError = true;
         }
 
-        if (isFieldEmpty(minPriceField) || isFieldEmpty(maxPriceField)) {
-            setError(priceErrorLabel, "Veuillez entrer des prix valides.", minPriceField, maxPriceField);
+        if (isFieldEmpty(tarifField) ) {
+            setError(priceErrorLabel, "Veuillez entrer la tarif .", tarifField);
             hasError = true;
         }
 
@@ -162,7 +159,7 @@ public class ModifierPrestataireController {
 
     private void updatePrestataireInDatabase() {
         try (Connection connection = MysqlConnection.getDBConnection()) {
-            String sql = "UPDATE prestataire SET metier_id = ?, nom = ?, prenom = ?, email = ?, telephone = ?, ville_id = ?, description = ?, prix_min = ?, prix_max = ? WHERE prestataire_id = ?";
+            String sql = "UPDATE prestataire SET metier_id = ?, nom = ?, prenom = ?, email = ?, telephone = ?, ville_id = ?, description = ?,tarif = ? WHERE prestataire_id = ?";
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setInt(1, metierMap.get(MétierField.getSelectionModel().getSelectedItem()));
                 ps.setString(2, lastNameField.getText());
@@ -171,9 +168,8 @@ public class ModifierPrestataireController {
                 ps.setString(5, phoneField.getText());
                 ps.setInt(6, villeMap.get(villeField.getSelectionModel().getSelectedItem()));
                 ps.setString(7, descriptionField.getText());
-                ps.setDouble(8, Double.parseDouble(minPriceField.getText()));
-                ps.setDouble(9, Double.parseDouble(maxPriceField.getText()));
-                ps.setInt(10, selectedPrestataire.getId());
+                ps.setDouble(8, Double.parseDouble(tarifField.getText()));
+                ps.setInt(9, selectedPrestataire.getId());
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
@@ -234,11 +230,8 @@ public class ModifierPrestataireController {
         emailField.setText(prestataire.getEmail());
         phoneField.setText(prestataire.getTelephone());
         descriptionField.setText(prestataire.getDescription());
-        minPriceField.setText(String.valueOf(prestataire.getPrix_min()));
-        maxPriceField.setText(String.valueOf(prestataire.getPrix_max()));
+        tarifField.setText(String.valueOf(prestataire.getTarif()));
+       
 
-      /*  // Remplir les ComboBox (Métier et Ville) avec les valeurs existantes
-        MétierField.setValue(prestataire.getMetier()); // Assurez-vous que getMetier renvoie un nom de métier
-        villeField.setValue(prestataire.getVille());*/ // Assurez-vous que getVille renvoie un nom de ville
-    }
+  }
 }

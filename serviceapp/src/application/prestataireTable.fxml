@@ -71,7 +71,7 @@
                               <Insets left="5.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #50C878;" text="Exporter" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#exporter" style="-fx-background-color: #50C878;" text="Exporter" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
@@ -96,8 +96,7 @@
                   <TableColumn fx:id="metierColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="metier" />
                   <TableColumn fx:id="descriptionColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="description" />
                   <TableColumn fx:id="disponibiliteColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="disponibilite" />
-                  <TableColumn fx:id="prix_minColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="prix_min" />
-                  <TableColumn fx:id="prix_maxColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="prix_max" />
+                  <TableColumn fx:id="tarifColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="tarif" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

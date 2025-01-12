@@ -71,15 +71,12 @@
 
                      <!-- Prix -->
                      <VBox>
-                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Prix Minimum" />
-                        <TextField fx:id="minPriceField" prefWidth="320.0" promptText="Prix Minimum" />
+                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Tarif" />
+                        <TextField fx:id="tarifField" prefWidth="320.0" promptText="Tarif" />
                         <Label fx:id="priceErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
 
-                     <VBox>
-                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Prix Maximum" />
-                        <TextField fx:id="maxPriceField" prefWidth="320.0" promptText="Prix Maximum" />
-                     </VBox>
+                     <VBox />
 
                   </VBox>
 
