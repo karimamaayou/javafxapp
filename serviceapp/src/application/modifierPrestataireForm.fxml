@@ -22,6 +22,8 @@
                         <Font name="Bauhaus 93" size="1.0" />
                      </font>
                   </Label>
+                  
+                  
                   <!-- Form Fields -->
                   <VBox spacing="10.0">
                      <!-- Nom Complet -->

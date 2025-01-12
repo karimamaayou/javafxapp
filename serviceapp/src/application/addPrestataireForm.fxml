@@ -23,6 +23,7 @@
                      <image>
                         <Image url="@../../../../../Desktop/WhatsApp%20Image%202024-11-23%20à%2019.16.21_69a6f61d.jpg" />
                      </image>
+                     
                   </ImageView>
                   <Button fx:id="viewClientsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewClientsButton" prefHeight="82.0" prefWidth="126.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
                      <cursor>

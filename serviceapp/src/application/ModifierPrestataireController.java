@@ -181,6 +181,7 @@ public class ModifierPrestataireController {
         loadDataFromDatabase("SELECT ville_id, ville FROM ville", villeField, villeMap);
     }
 
+    
     private void loadMetiersFromDatabase() {
         loadDataFromDatabase("SELECT metier_id, metier FROM metier", MétierField, metierMap);
     }
