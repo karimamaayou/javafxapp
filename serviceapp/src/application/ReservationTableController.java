@@ -220,7 +220,7 @@ public class ReservationTableController {
 	        java.io.File file = fileChooser.showSaveDialog(null);
 	        if (file != null) {
 	            // Connect to the PHP script to export the data
-	            URL url = new URL("http://localhost/javafx_export/export_excel.php");
+	            URL url = new URL("http://localhost/javafx_export/export_reservation.php");
 	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	            conn.setRequestMethod("POST");
 	            conn.setDoOutput(true);
