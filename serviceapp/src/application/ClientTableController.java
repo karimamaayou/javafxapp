@@ -16,10 +16,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -43,17 +46,12 @@ public class ClientTableController {
     private Button exporterButtonID;
     @FXML
     private TextField searchField; 
-    @FXML
-    private Button logOutButtonID;
     
     @FXML
-    private Button viewClientsButtonID;
-
+    private Pagination paginationID;
+    
     @FXML
-    private Button viewPrestatiaresButtonID;
-
-    @FXML
-    private Button viewReservationsButtonID;
+    private ChoiceBox<Integer> pageSizeChoiceBox;
 
 	@FXML
 	private TableColumn<Client, String> emailColumn;
@@ -71,46 +69,55 @@ public class ClientTableController {
 	private TableColumn<Client, String> villeColumn;
 
 	private ObservableList<Client> clientList = FXCollections.observableArrayList();
+	private static int ITEMS_PER_PAGE = 10;
 	
 	public void initialize() {
 		
-
 		emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 		nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
 		prenomColumn.setCellValueFactory(new PropertyValueFactory<>("prenom"));
 		telephoneColumn.setCellValueFactory(new PropertyValueFactory<>("telephone"));
 		villeColumn.setCellValueFactory(new PropertyValueFactory<>("ville"));
 
+	    // Populate the ChoiceBox with options (e.g., 10, 20, 50)
+		pageSizeChoiceBox.setItems(FXCollections.observableArrayList(10, 20, 50, 100));
+		pageSizeChoiceBox.setValue(10);
+		//event hander for the choice box 
+		pageSizeChoiceBox.setOnAction(event -> {
+		    ITEMS_PER_PAGE = pageSizeChoiceBox.getValue();
+		    getAllClients();
+		});
+
+	    		
+		
 		getAllClients();
+	
 		
 		// Add a listener to the search field for reactive search
 	    searchField.textProperty().addListener((observable, oldValue, newValue) -> {
 	        String searchQuery = newValue.toLowerCase().trim();
-	        if (searchQuery.isEmpty()) {
-	            // If the search field is empty, show all clients
-	            clientTable.setItems(clientList);
-	        } else {
+	        
+            if(!searchQuery.isEmpty())  {
 	            // Otherwise, filter the clients based on the search query
 	            filterClients(searchQuery);
+	        }else {
+	        	getAllClients();
 	        }
 	    });
+	    
+        // Add pagination page change listener
+        paginationID.setCurrentPageIndex(0); // Start from the first page
+        paginationID.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
+            loadPage(newValue.intValue());
+        });
+
 
 	}
 
 	@FXML
 	void ajouterClient(ActionEvent event) {
 
-		try {
-			// Load the FXML file
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("addClientsFrom.fxml"));
-			HBox root = loader.load();
-
-			// Get the current stage (window) and set the new scene
-			Stage stage = (Stage) ajouterButtonID.getScene().getWindow();
-			stage.setScene(new Scene(root));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		DBUtils.changeScene( event, "addClientsFrom.fxml");
 
 	}
 
@@ -179,7 +186,7 @@ public class ClientTableController {
 	        // Open file chooser to get the selected file
 	        java.io.File file = fileChooser.showSaveDialog(null);
 	        if (file != null) {
-	            URL url = new URL("http://localhost/javafx_export/export_excel.php");
+	            URL url = new URL("http://localhost/javafx_export/export_client.php");
 	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	            conn.setRequestMethod("POST");
 	            conn.setDoOutput(true);
@@ -276,53 +283,35 @@ public class ClientTableController {
 
 				clientList.add(new Client(id, nom, prenom, email, ville, telephone));
 
-				clientTable.setItems(clientList);
+				//clientTable.setItems(clientList);
 
 			}
+			
+	        // Set up pagination,the ceil ensures that all the data is displayed even if they are half the page
+	        paginationID.setPageCount((int) Math.ceil(clientList.size() / (double) ITEMS_PER_PAGE));
+	        
+	        
+	        // Load the first page
+	        loadPage(0);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-    @FXML
-    void logOut(ActionEvent event) {
-    	
-		Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-		confirmationAlert.setTitle("Se Deconnecter");
-		confirmationAlert.setHeaderText(null);
-		confirmationAlert.setContentText("Êtes-vous sûr de se deconnecter ?");
+	private void loadPage(int pageIndex) {
+	    int fromIndex = pageIndex * ITEMS_PER_PAGE;
+	    int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, clientList.size());
+	    ObservableList<Client> pageData = FXCollections.observableArrayList(clientList.subList(fromIndex, toIndex));
+	    clientTable.setItems(pageData); // Update the TableView with data for the current page
+	    
+	}
+	
 
-		// Wait for the user to respond
-		Optional<ButtonType> result = confirmationAlert.showAndWait();
-        //if he chosed ok
-		if (result.isPresent() && result.get() == ButtonType.OK) {
-			
-
-			try {
-				// Load the FXML file
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
-				HBox root = loader.load();
-
-				// Get the current stage (window) and set the new scene
-				Stage stage = (Stage) logOutButtonID.getScene().getWindow();
-				
-				stage.setScene(new Scene(root));
-				stage.centerOnScreen();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		} 
-		//if he chosed cancel clear the selection in table
-		else {
-			// User cancelled, clear the selection
-			clientTable.getSelectionModel().clearSelection();
-		}
-
-    }
 	
 	private void filterClients(String searchQuery) {
+
+		
 	    ObservableList<Client> filteredList = FXCollections.observableArrayList();
 
 	    for (Client client : clientList) {
@@ -333,32 +322,19 @@ public class ClientTableController {
 	            filteredList.add(client);
 	        }
 	    }
+	    // Update pagination to match the filtered list
+	    paginationID.setPageCount((int) Math.ceil(filteredList.size() / (double) ITEMS_PER_PAGE));
 	    
-	    clientTable.setItems(filteredList);
+	    // Load the first page of the filtered list
+	    loadFilteredPage(0, filteredList);
 	}
-
-
-
-    @FXML
-    void viewClientsButton(ActionEvent event) {
-    	
-    	DBUtils.changeScene( event, "clientsTable.fxml");
-
-    }
-    
-    @FXML
-    void viewPrestatairesButton(ActionEvent event) {
-  
-    	DBUtils.changeScene( event, "prestataireTable.fxml");
-
-    }
-    
-    @FXML
-    void viewReservationsButton(ActionEvent event) {
-  
-    	DBUtils.changeScene( event, "reservationTable.fxml");
-
-    }
+	
+	private void loadFilteredPage(int pageIndex, ObservableList<Client> filteredList) {
+	    int fromIndex = pageIndex * ITEMS_PER_PAGE;
+	    int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, filteredList.size());
+	    ObservableList<Client> pageData = FXCollections.observableArrayList(filteredList.subList(fromIndex, toIndex));
+	    clientTable.setItems(pageData); // Update the TableView with the filtered data for the current page
+	}
 
  
 	private void deleteClientFromDatabase(Client client) {
