@@ -1,6 +1,11 @@
 package application;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +26,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -28,10 +34,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ReservationTableController {
+	 @FXML
+	    private Button exporterButtonID;
+	
+    @FXML
+    private TableColumn<Reservation,Double> prix_Column;
+   
 	@FXML
 	private TableView<Reservation> reservationTable;
 
@@ -108,7 +121,7 @@ public class ReservationTableController {
 		dateDebutColumn.setCellValueFactory(new PropertyValueFactory<>("dateDebut"));
 		dateFinColumn.setCellValueFactory(new PropertyValueFactory<>("dateFin"));
 		statutColumn.setCellValueFactory(new PropertyValueFactory<>("statut"));
-
+		prix_Column.setCellValueFactory(new PropertyValueFactory<>("prix"));
 		getAllReservations();
 		searchTextFieldID.textProperty().addListener((observable, oldValue, newValue) -> {
 			String searchQuery = newValue.toLowerCase().trim();
@@ -142,7 +155,7 @@ public class ReservationTableController {
 		reservtationList.clear();
 
 		Connection connection = MysqlConnection.getDBConnection();
-		String sql = "SELECT c.client_id, CONCAT(c.nom, ' ', c.prenom) AS nomCompletClient, "
+		String sql = "SELECT c.client_id,r.prix AS prix, CONCAT(c.nom, ' ', c.prenom) AS nomCompletClient, "
 				+ "c.telephone AS telephoneClient, " + // Correction ici
 				"p.prestataire_id,CONCAT(p.nom, ' ', p.prenom) AS nomCompletPrestataire, "
 				+ "p.telephone AS telephonePrestataire, " + "r.reservation_id, " + "r.date_debut as dateDebut, "
@@ -169,9 +182,9 @@ public class ReservationTableController {
 				String dateDebut = results.getString("dateDebut");
 				String dateFin = results.getString("dateFin");
 				String statut = results.getString("statut");
-
+				Double prix = results.getDouble("prix");
 				reservtationList.add(new Reservation(idClient, nomCompletClient, telephoneClient, idPrestataire,
-						nomCompletPrestataire, telephonePrestataire, idReservtion, statut, dateDebut, dateFin));
+						nomCompletPrestataire, telephonePrestataire, idReservtion, statut, dateDebut, dateFin,prix));
 
 			}
 
@@ -183,90 +196,135 @@ public class ReservationTableController {
 	}
 
 	@FXML
+	void exporter(ActionEvent event) {
+	    try {
+	        // Prepare data to send to the PHP script
+	        StringBuilder postData = new StringBuilder();
+	        for (Reservation reservation : reservtationList) {
+	            postData.append(reservation.getNomCompletClient()).append(",");
+	            postData.append(reservation.getTelephoneClient()).append(",");
+	            postData.append(reservation.getNomCompletPrestataire()).append(",");
+	            postData.append(reservation.getTelephonePrestataire()).append(",");
+	            postData.append(reservation.getDateDebut()).append(",");
+	            postData.append(reservation.getDateFin()).append(",");
+	            postData.append(reservation.getStatut()).append(",");
+	            postData.append(reservation.getPrix()).append("\n");
+	        }
+
+	        // Create file chooser
+	        FileChooser fileChooser = new FileChooser();
+	        fileChooser.setTitle("Save Excel File");
+	        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+
+	        // Open file chooser to get the selected file
+	        java.io.File file = fileChooser.showSaveDialog(null);
+	        if (file != null) {
+	            // Connect to the PHP script to export the data
+	            URL url = new URL("http://localhost/javafx_export/export_excel.php");
+	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	            conn.setRequestMethod("POST");
+	            conn.setDoOutput(true);
+	            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+	            try (OutputStream os = conn.getOutputStream()) {
+	                os.write(postData.toString().getBytes("UTF-8"));
+	            }
+
+	            // Handle response and download the file
+	            try (InputStream in = conn.getInputStream();
+	                 FileOutputStream out = new FileOutputStream(file)) {
+	                byte[] buffer = new byte[1024];
+	                int bytesRead;
+	                while ((bytesRead = in.read(buffer)) != -1) {
+	                    out.write(buffer, 0, bytesRead);
+	                }
+	                System.out.println("Excel file downloaded successfully to " + file.getAbsolutePath());
+	            }
+	        } else {
+	            System.out.println("File save cancelled by user.");
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.err.println("Error during file export: " + e.getMessage());
+	    }
+	}
+
+	@FXML
 	void changeStatut(ActionEvent event) {
-		// Get the selected reservation from the table
-		Reservation selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
-		if (selectedReservation == null) {
-			showWarningAlert("Changement de statut impossible", "Aucune réservation sélectionnée !");
-			return;
-		}
+	    // Get the selected reservation from the table
+	    Reservation selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
+	    if (selectedReservation == null) {
+	        showWarningAlert("Changement de statut impossible", "Aucune réservation sélectionnée !");
+	        return;
+	    }
 
-		// Create a new stage for the status change dialog
-		Stage dialog = new Stage();
-		dialog.initModality(Modality.APPLICATION_MODAL); // Modal: blocks the main window
-		dialog.setTitle("Changer le statut");
+	    // Create a new dialog for changing the status
+	    Dialog<String> dialog = new Dialog<>();
+	    dialog.setTitle("Changer le statut");
+	    dialog.setHeaderText("Modifier le statut de la réservation sélectionnée");
+	    dialog.initModality(Modality.APPLICATION_MODAL);
 
-		// Create ComboBox for selecting a status
-		ComboBox<String> comboBox = new ComboBox<>();
-		comboBox.getItems().addAll("Terminer", "Annuler", "En cours");
-		comboBox.setValue(selectedReservation.getStatut()); // Pre-fill with the current status
+	    // Set the button types (OK and Cancel)
+	    ButtonType confirmButtonType = new ButtonType("Confirmer", ButtonBar.ButtonData.OK_DONE);
+	    dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
 
-		// Buttons for confirming or cancelling the change
-		Button okButton = new Button("Confirmer");
-		Button cancelButton = new Button("Annuler");
+	    // Create a ComboBox for selecting the status
+	    ComboBox<String> comboBox = new ComboBox<>();
+	    comboBox.getItems().addAll("Terminer", "Annuler", "En cours");
+	    comboBox.setValue(selectedReservation.getStatut()); // Pre-fill with the current status
 
-		// OK Button action: update the status in the database
-		okButton.setOnAction(e -> {
-			String selectedStatut = comboBox.getValue();
+	    // Add the ComboBox to the dialog's content
+	    VBox content = new VBox(10, new Label("Sélectionnez un statut :"), comboBox);
+	    content.setStyle("-fx-padding: 20;");
+	    dialog.getDialogPane().setContent(content);
 
-			// Update the reservation object with the new status
-			selectedReservation.setStatut(selectedStatut);
+	    // Handle the result when the user clicks Confirm
+	    dialog.setResultConverter(dialogButton -> {
+	        if (dialogButton == confirmButtonType) {
+	            return comboBox.getValue();
+	        }
+	        return null;
+	    });
 
-			// Retrieve the statut_id based on the selected status
-			String selectStatutIdQuery = "SELECT statut_id FROM statut WHERE statut = ?";
-			try (Connection connection = MysqlConnection.getDBConnection();
-					PreparedStatement psSelect = connection.prepareStatement(selectStatutIdQuery)) {
+	    // Show the dialog and wait for the user's input
+	    Optional<String> result = dialog.showAndWait();
 
-				psSelect.setString(1, selectedStatut);
-				ResultSet rs = psSelect.executeQuery();
+	    result.ifPresent(newStatus -> {
+	        try (Connection connection = MysqlConnection.getDBConnection()) {
+	            // Retrieve the `statut_id` based on the selected status
+	            String selectStatutIdQuery = "SELECT statut_id FROM statut WHERE statut = ?";
+	            try (PreparedStatement psSelect = connection.prepareStatement(selectStatutIdQuery)) {
+	                psSelect.setString(1, newStatus);
+	                ResultSet rs = psSelect.executeQuery();
 
-				if (rs.next()) {
-					int statutId = rs.getInt("statut_id");
+	                if (rs.next()) {
+	                    int statutId = rs.getInt("statut_id");
 
-					// Now update the reservation with the statut_id in the database
-					String updateQuery = "UPDATE reservation SET statut_id = ? WHERE reservation_id = ?";
-					try (PreparedStatement psUpdate = connection.prepareStatement(updateQuery)) {
-						psUpdate.setInt(1, statutId);
-						psUpdate.setInt(2, selectedReservation.getIdReservtion());
+	                    // Update the reservation's status in the database
+	                    String updateQuery = "UPDATE reservation SET statut_id = ? WHERE reservation_id = ?";
+	                    try (PreparedStatement psUpdate = connection.prepareStatement(updateQuery)) {
+	                        psUpdate.setInt(1, statutId);
+	                        psUpdate.setInt(2, selectedReservation.getIdReservtion());
 
-						int rowsAffected = psUpdate.executeUpdate();
-						if (rowsAffected > 0) {
-							showInfoAlert("Changement de statut réussi", "Le statut a été modifié avec succès.");
-
-							// Now update the status in the list
-							selectedReservation.setStatut(selectedStatut); // Update the status in the list
-
-							// Refresh the TableView to reflect the change
-							reservationTable.refresh(); // <--- This should be here to refresh the TableView
-						} else {
-							showErrorAlert("Échec", "Impossible de modifier le statut de la réservation.", null);
-						}
-					}
-
-				} else {
-					showErrorAlert("Statut introuvable",
-							"Le statut sélectionné est introuvable dans la base de données.", selectStatutIdQuery);
-				}
-
-			} catch (Exception ex) {
-				showErrorAlert("Erreur", "Une erreur s'est produite lors du changement de statut.", ex.getMessage());
-			}
-
-			// Close the dialog after the update
-			dialog.close();
-		});
-
-		// Cancel Button action: simply close the dialog
-		cancelButton.setOnAction(e -> dialog.close());
-
-		// Layout for the dialog
-		HBox dialogVBox = new HBox(10, new Label("Sélectionnez un statut :"), comboBox, okButton, cancelButton);
-		dialogVBox.setStyle("-fx-padding: 20; -fx-alignment: center;");
-
-		// Set the dialog scene
-		Scene dialogScene = new Scene(dialogVBox, 600, 200);
-		dialog.setScene(dialogScene);
-		dialog.show(); // Show the dialog
+	                        int rowsAffected = psUpdate.executeUpdate();
+	                        if (rowsAffected > 0) {
+	                            selectedReservation.setStatut(newStatus); // Update the status in the object
+	                            reservationTable.refresh(); // Refresh the TableView
+	                            showInfoAlert("Changement de statut réussi", "Le statut a été modifié avec succès.");
+	                        } else {
+	                            showErrorAlert("Échec", "Impossible de modifier le statut de la réservation.", null);
+	                        }
+	                    }
+	                } else {
+	                    showErrorAlert("Statut introuvable", "Le statut sélectionné est introuvable dans la base de données.",
+	                            null);
+	                }
+	            }
+	        } catch (Exception e) {
+	            showErrorAlert("Erreur", "Une erreur s'est produite lors du changement de statut.", e.getMessage());
+	        }
+	    });
 	}
 
 	@FXML
