@@ -433,7 +433,6 @@ public class PrestataireTableController {
 	            postData.append(prestataire.getMetier()).append(",");
 	            postData.append(prestataire.getDescription()).append(",");
 	            postData.append(prestataire.getDisponibilite()).append(",");
-	            
 	            postData.append(prestataire.getTarif()).append("\n");
 	        }
 

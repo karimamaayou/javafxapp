@@ -182,6 +182,7 @@ public class ModifierPrestataireController {
     }
 
     
+    
     private void loadMetiersFromDatabase() {
         loadDataFromDatabase("SELECT metier_id, metier FROM metier", MétierField, metierMap);
     }
