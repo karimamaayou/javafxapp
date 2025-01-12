@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -22,45 +23,53 @@ import javafx.stage.Stage;
 public class AddReservationController {
 
     @FXML
+    private TextField PriceField;
+
+    @FXML
     private Button ReserverButtonId;
-
-    @FXML
-    private ComboBox<String> prestataireField;
-
-    @FXML
-    private ComboBox<String> clientField;
-
-    @FXML
-    private TextField dateDebutField;
-
-    @FXML
-    private TextField dateFinField;
 
     @FXML
     private Label clientErrorLabel;
 
     @FXML
-    private Label prestataireErrorLabel;
+    private ComboBox<String> clientField;
 
     @FXML
     private Label dateDebutErrorLabel;
 
     @FXML
+    private DatePicker dateDebutField;
+
+    @FXML
     private Label dateFinErrorLabel;
 
     @FXML
-    private Button viewReservatioButtonID;
+    private DatePicker dateFinField;
+
+    @FXML
+    private Label prestataireErrorLabel;
+
+    @FXML
+    private ComboBox<String> prestataireField;
+
+    @FXML
+    private Label priceErrorLabel;
+
+    @FXML
+    private Button viewReservationButtonID;
+
+   
 
     private Map<String, Integer> clientMap = new HashMap<>();
     private Map<String, Integer> prestataireMap = new HashMap<>();
 
     @FXML
     public void initialize() {
-        // Initialisation des listes déroulantes avec les données de la base
+        // Charger les clients et prestataires depuis la base de données
         loadClientsFromDatabase();
         loadPrestatairesFromDatabase();
 
-        // Effacer les messages d'erreur lorsque les champs sont modifiés
+        // Ajouter des écouteurs pour effacer les messages d'erreur
         clientField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 clientErrorLabel.setText("");
@@ -70,20 +79,20 @@ public class AddReservationController {
         prestataireField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 prestataireErrorLabel.setText("");
+                // Charger le prix correspondant au prestataire sélectionné
+                loadPrixForPrestataire(newValue);
             }
         });
 
-        dateDebutField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.trim().isEmpty()) {
+        dateDebutField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
                 dateDebutErrorLabel.setText("");
-                dateDebutField.getStyleClass().remove("error");
             }
         });
 
-        dateFinField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.trim().isEmpty()) {
+        dateFinField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
                 dateFinErrorLabel.setText("");
-                dateFinField.getStyleClass().remove("error");
             }
         });
     }
@@ -97,6 +106,7 @@ public class AddReservationController {
         prestataireErrorLabel.setText("");
         dateDebutErrorLabel.setText("");
         dateFinErrorLabel.setText("");
+        priceErrorLabel.setText("");
 
         // Validation des champs
         if (clientField.getSelectionModel().isEmpty()) {
@@ -109,15 +119,38 @@ public class AddReservationController {
             hasError = true;
         }
 
-        if (dateDebutField.getText().trim().isEmpty()) {
+        if (dateDebutField.getValue() == null) {
             dateDebutErrorLabel.setText("Veuillez entrer la date de début.");
-            dateDebutField.getStyleClass().add("error");
             hasError = true;
         }
 
-        if (dateFinField.getText().trim().isEmpty()) {
+        if (dateFinField.getValue() == null) {
             dateFinErrorLabel.setText("Veuillez entrer la date de fin.");
-            dateFinField.getStyleClass().add("error");
+            hasError = true;
+        }
+
+        if (dateDebutField.getValue() != null && dateFinField.getValue() != null) {
+            if (dateDebutField.getValue().isAfter(dateFinField.getValue())) {
+                dateDebutErrorLabel.setText("La date de début doit être antérieure à la date de fin.");
+                hasError = true;
+            }
+        }
+
+        String prixStr = PriceField.getText();
+        if (prixStr == null || prixStr.isEmpty()) {
+            priceErrorLabel.setText("Veuillez entrer le prix.");
+            hasError = true;
+        }
+
+        double prix = 0;
+        try {
+            prix = Double.parseDouble(prixStr);
+            if (prix <= 0) {
+                priceErrorLabel.setText("Le prix doit être supérieur à zéro.");
+                hasError = true;
+            }
+        } catch (NumberFormatException e) {
+            priceErrorLabel.setText("Le prix doit être un nombre valide.");
             hasError = true;
         }
 
@@ -126,15 +159,19 @@ public class AddReservationController {
                 // Récupérer les IDs sélectionnés
                 int clientId = clientMap.get(clientField.getSelectionModel().getSelectedItem());
                 int prestataireId = prestataireMap.get(prestataireField.getSelectionModel().getSelectedItem());
+                int statut_id = 1;
 
-                // Insérer la réservation
-                String sql = "INSERT INTO reservation (client_id, prestataire_id, date_debut, date_fin) VALUES (?, ?, ?, ?)";
-                PreparedStatement ps = connection.prepareStatement(sql);
-                ps.setInt(1, clientId);
-                ps.setInt(2, prestataireId);
-                ps.setString(3, dateDebutField.getText());
-                ps.setString(4, dateFinField.getText());
-                ps.execute();
+                // Insérer la réservation avec le prix
+                String sql = "INSERT INTO reservation (client_id, prestataire_id, date_debut, date_fin, prix,statut_id) VALUES (?, ?, ?, ?, ?, ?)";
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setInt(1, clientId);
+                    ps.setInt(2, prestataireId);
+                    ps.setObject(3, dateDebutField.getValue());
+                    ps.setObject(4, dateFinField.getValue());
+                    ps.setDouble(5, prix);
+                    ps.setInt(6, statut_id);
+                    ps.executeUpdate();
+                }
 
                 System.out.println("Réservation ajoutée avec succès.");
                 navigateToReservationTable();
@@ -145,35 +182,44 @@ public class AddReservationController {
             }
         }
     }
+    
+    
 
     @FXML
     void viewReservationButton(ActionEvent event) {
-        navigateToReservationTable();
+
     }
 
-    private void navigateToReservationTable() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("reservationTable.fxml"));
-            HBox root = loader.load();
-            Stage stage = (Stage) ReserverButtonId.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
+    private void loadPrixForPrestataire(String prestataireName) {
+        try (Connection connection = MysqlConnection.getDBConnection()) {
+            String query = "SELECT prix FROM reservation WHERE reservation_id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, prestataireName);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        double prix = rs.getDouble("prix");
+                        PriceField.setText(String.valueOf(prix));
+                    }
+                }
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
+            System.err.println("Erreur lors du chargement du prix : " + e.getMessage());
         }
     }
 
     private void loadClientsFromDatabase() {
         try (Connection connection = MysqlConnection.getDBConnection()) {
             String query = "SELECT client_id, CONCAT(nom, ' ', prenom) AS fullName FROM client";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
+            try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
 
-            clientField.getItems().clear();
-            while (rs.next()) {
-                int clientId = rs.getInt("client_id");
-                String fullName = rs.getString("fullName");
-                clientField.getItems().add(fullName);
-                clientMap.put(fullName, clientId);
+                clientField.getItems().clear();
+                while (rs.next()) {
+                    int clientId = rs.getInt("client_id");
+                    String fullName = rs.getString("fullName");
+                    clientField.getItems().add(fullName);
+                    clientMap.put(fullName, clientId);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -184,19 +230,30 @@ public class AddReservationController {
     private void loadPrestatairesFromDatabase() {
         try (Connection connection = MysqlConnection.getDBConnection()) {
             String query = "SELECT prestataire_id, CONCAT(nom, ' ', prenom) AS fullName FROM prestataire";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
+            try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
 
-            prestataireField.getItems().clear();
-            while (rs.next()) {
-                int prestataireId = rs.getInt("prestataire_id");
-                String fullName = rs.getString("fullName");
-                prestataireField.getItems().add(fullName);
-                prestataireMap.put(fullName, prestataireId);
+                prestataireField.getItems().clear();
+                while (rs.next()) {
+                    int prestataireId = rs.getInt("prestataire_id");
+                    String fullName = rs.getString("fullName");
+                    prestataireField.getItems().add(fullName);
+                    prestataireMap.put(fullName, prestataireId);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Erreur lors du chargement des prestataires : " + e.getMessage());
+        }
+    }
+
+    private void navigateToReservationTable() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("reservationTable.fxml"));
+            HBox root = loader.load();
+            Stage stage = (Stage) ReserverButtonId.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

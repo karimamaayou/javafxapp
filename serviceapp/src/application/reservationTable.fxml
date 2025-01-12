@@ -76,7 +76,7 @@
                               <Insets left="5.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #50C878;" text="Exporter" textFill="WHITE">
+                        <Button fx:id="exporterButtonID" mnemonicParsing="false" onAction="#exporter" style="-fx-background-color: #50C878;" text="Exporter" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
@@ -99,6 +99,7 @@
                   <TableColumn fx:id="telephonePrestataireColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="telephone" />
                   <TableColumn fx:id="dateDebutColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="date debut" />
                   <TableColumn fx:id="dateFinColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="date fin" />
+                  <TableColumn fx:id="prix_Column" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="prix" />
                   <TableColumn fx:id="statutColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="statut" />
                </columns>
                <columnResizePolicy>
