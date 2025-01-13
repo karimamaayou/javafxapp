@@ -57,11 +57,9 @@ public class AddPrestataireController {
 	@FXML
 	private Label titleErrorLabel;
 
-	@FXML
-	private Button viewClientsButtonID;
+	
 
-	@FXML
-	private Button viewPrestatireButtonID;
+	
 
 	@FXML
 	private Label villeErrorLabel;
@@ -142,24 +140,7 @@ public class AddPrestataireController {
 	        e.printStackTrace();
 	    }
 
-	    setSceneToPrestataireTable();
-	}
-
-		
-	private void setSceneToPrestataireTable() {
-	    try {
-	        // Charger le fichier FXML de la table des prestataires
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("prestataireTable.fxml"));
-	        HBox root = loader.load();
-
-	        // Obtenir la scène actuelle et la changer avec la nouvelle scène
-	        Stage stage = (Stage) viewPrestatireButtonID.getScene().getWindow();
-	        stage.setScene(new Scene(root));
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        showAlert("Erreur", "Une erreur s'est produite lors du changement de scène.");
-	    }
+	    
 	}
 
 	// Méthode pour obtenir l'ID du métier
@@ -339,18 +320,22 @@ public class AddPrestataireController {
 		}
 			    
 			
-	
-		// Vérification du champ Prix minimum
-		if (tarifField.getText().trim().isEmpty() ) {
-			priceErrorLabel.setText("Veuillez entrer la tarif .");
-			tarifField.getStyleClass().add("error");
-			hasError = true;
-		} else
-
-		
-	
-		
-		
+		// Vérifie que le tarif
+		if (tarifField.getText().trim().isEmpty()) {
+		    priceErrorLabel.setText("Veuillez entrer un tarif.");
+		    tarifField.getStyleClass().add("error");
+		    hasError = true;
+		} else {
+		    try {
+		        Double.parseDouble(tarifField.getText()); // Vérifie que le tarif est un nombre
+		        priceErrorLabel.setText(""); // Si tout va bien, efface l'erreur
+		        tarifField.getStyleClass().remove("error");
+		    } catch (NumberFormatException e) {
+		        priceErrorLabel.setText("Le tarif doit être un nombre valide.");
+		        tarifField.getStyleClass().add("error");
+		        hasError = true;
+		    }
+		}
 		
 		if (villeField.getSelectionModel().getSelectedItem() == null
 				|| villeField.getSelectionModel().getSelectedItem().trim().isEmpty()) {
@@ -369,6 +354,7 @@ public class AddPrestataireController {
 		
 		if (descriptionField.getText().trim().isEmpty()) {
 			descriptionErrorLabel.setText("Veuillez sélectionner une description.");
+			hasError = true;
 		}
 	
 		
@@ -377,6 +363,7 @@ public class AddPrestataireController {
 		
 	if(!hasError ) {
 		handleAddPrestataire();
+		DBUtils.changeScene( event, "prestataireTable.fxml");
 	}
 		
 	}
@@ -424,37 +411,7 @@ public class AddPrestataireController {
 		}
 	}
 
-	// chenge de page ver table clients
-	@FXML
-	void viewClientsButton(ActionEvent event) {
-		try {
-			// Load the FXML file
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("clientsTable.fxml"));
-			HBox root = loader.load();
-
-			// Get the current stage (window) and set the new scene
-			Stage stage = (Stage) viewClientsButtonID.getScene().getWindow();
-			stage.setScene(new Scene(root));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	// chenge de page ver table prestataire
-	@FXML
-	void viewPrestatireButton(ActionEvent event) {
-		try {
-			// Load the FXML file
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("prestataireTable.fxml"));
-			HBox root = loader.load();
-			// Get the current stage (window) and set the new scene
-			Stage stage = (Stage) viewPrestatireButtonID.getScene().getWindow();
-			stage.setScene(new Scene(root));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 }
 
 

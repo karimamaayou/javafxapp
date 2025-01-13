@@ -21,6 +21,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -82,9 +84,14 @@ public class PrestataireTableController {
 
 	@FXML
 	private TextField tf_recherche;
-
+	@FXML
+    private Pagination paginationID;
+	@FXML
+    private ChoiceBox<Integer> pageSizeChoiceBox;
+	
 	@FXML
 	private void initialize() {
+		
 		// Configure les colonnes
 		emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 		nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -114,6 +121,26 @@ public class PrestataireTableController {
 				searchPrestataires(newValue);
 			}
 		});
+		
+		
+		   paginationID.setPageCount((int) Math.ceil(prestatireList.size() / (double) ITEMS_PER_PAGE));
+		    setupPagination();
+
+		    // Charger la première page
+		    loadPage(0);
+
+		    // Configurer la recherche
+		    setupSearchFunctionality();
+		    
+
+	        // Configurer le choix de la taille des pages
+	        setupPageSizeChoiceBox();
+
+	        // Configurer la pagination
+	        setupPagination();
+
+	        // Mettre à jour la pagination pour initialiser l'affichage
+	        updatePagination();
 	}
 
 	public void getAllPrestataire() {
@@ -256,13 +283,14 @@ public class PrestataireTableController {
 
 				// Désélectionner l'élément
 				prestataireTable.getSelectionModel().clearSelection();
-
+				loadAllPrestataires();
 				// Afficher un message de confirmation
 				Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
 				successAlert.setTitle("Succès");
 				successAlert.setHeaderText(null);
 				successAlert.setContentText("Le prestataire a été supprimé avec succès.");
 				successAlert.showAndWait();
+				
 			}
 			// Si l'utilisateur annule
 			else {
@@ -398,6 +426,170 @@ public class PrestataireTableController {
 	        System.err.println("Erreur lors de l'exportation : " + e.getMessage());
 	    }
 	}
+	//prestatireList
+	private static final int ITEMS_PER_PAGE = 10;
+	 // Assurez-vous que cette variable est bien initialisée.
+	
+
+	// Charger une page spécifique
+	private void loadPage(int pageIndex) {
+	    int fromIndex = pageIndex * ITEMS_PER_PAGE;
+	    int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, prestatireList.size());
+
+	    if (fromIndex > prestatireList.size()) {
+	        return; // Pas de données à charger pour cet index
+	    }
+
+	    ObservableList<Prestataire> pageData = FXCollections.observableArrayList(prestatireList.subList(fromIndex, toIndex));
+
+	    // Mettre à jour la TableView avec les données de la page actuelle
+	    prestataireTable.setItems(pageData);
+	}
+
+	// Filtrer les prestataires en fonction de la recherche
+	private void filterClients(String searchQuery) {
+	    ObservableList<Prestataire> filteredList = FXCollections.observableArrayList();
+
+	    for (Prestataire prestataire : prestatireList) {
+	        if (prestataire.getNom().toLowerCase().contains(searchQuery) || 
+	            prestataire.getPrenom().toLowerCase().contains(searchQuery) || 
+	            prestataire.getEmail().toLowerCase().contains(searchQuery) || 
+	            prestataire.getTelephone().toLowerCase().contains(searchQuery)) {
+	            filteredList.add(prestataire);
+	        }
+	    }
+
+	    // Mettre à jour le nombre de pages pour la pagination
+	    paginationID.setPageCount((int) Math.ceil(filteredList.size() / (double) ITEMS_PER_PAGE));
+
+	    // Charger la première page des résultats filtrés
+	    loadFilteredPage(0, filteredList);
+	}
+
+	// Charger une page spécifique des résultats filtrés
+	private void loadFilteredPage(int pageIndex, ObservableList<Prestataire> filteredList) {
+	    int fromIndex = pageIndex * ITEMS_PER_PAGE;
+	    int toIndex = Math.min(fromIndex + ITEMS_PER_PAGE, filteredList.size());
+
+	    if (fromIndex > filteredList.size()) {
+	        return; // Pas de données à charger pour cet index
+	    }
+
+	    ObservableList<Prestataire> pageData = FXCollections.observableArrayList(filteredList.subList(fromIndex, toIndex));
+
+	    // Mettre à jour la TableView avec les données filtrées pour la page actuelle
+	    prestataireTable.setItems(pageData);
+	}
+
+	// Configuration de la pagination
+	private void setupPagination() {
+	    paginationID.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
+	        loadPage(newValue.intValue());
+	    });
+	    paginationID.setCurrentPageIndex(0); // Démarrer à la première page
+
+	    // Ajouter un Listener pour écouter les changements de page
+	    paginationID.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> updatePagination());
+	}
+
+	// Configuration de la fonctionnalité de recherche
+	private void setupSearchFunctionality() {
+	    TextField tf_recherche = new TextField(); // Assurez-vous que ce champ de texte est bien initialisé dans votre interface.
+	    tf_recherche.textProperty().addListener((observable, oldValue, newValue) -> {
+	        String searchQuery = newValue.toLowerCase().trim();
+	        if (searchQuery.isEmpty()) {
+	            paginationID.setPageCount((int) Math.ceil(prestatireList.size() / (double) ITEMS_PER_PAGE));
+	            loadPage(0); // Recharger la première page des données non filtrées
+	        } else {
+	            filterClients(searchQuery);
+	        }
+	    });
+	}
+
+	private static final int DEFAULT_PAGE_SIZE = 10;
+	
+
+	// Méthode pour configurer la sélection de la taille des pages
+	private void setupPageSizeChoiceBox() {
+	    // Ajouter les options de tailles de page
+		pageSizeChoiceBox.setItems(FXCollections.observableArrayList(10, 20, 50, 100));
+	    pageSizeChoiceBox.setValue(DEFAULT_PAGE_SIZE); // Valeur par défaut
+
+	    // Ajouter un événement pour mettre à jour la pagination lorsqu'une nouvelle taille est sélectionnée
+	    pageSizeChoiceBox.setOnAction(event -> {
+	        paginationID.setCurrentPageIndex(0); // Réinitialiser à la première page
+	        updatePagination(); // Mettre à jour la pagination
+	    });
+	}
+
+	
+
+	// Méthode pour mettre à jour la pagination
+	private void updatePagination() {
+	    // Obtenir la taille actuelle des pages sélectionnée par l'utilisateur
+	    int pageSize = pageSizeChoiceBox.getValue();
+
+	    // Calculer le nombre total de pages
+	    int pageCount = (int) Math.ceil(prestatireList.size() / (double) pageSize);
+	    paginationID.setPageCount(pageCount);
+
+	    // Charger les données pour la page actuelle
+	    loadPage(paginationID.getCurrentPageIndex(), pageSize);
+	}
+
+	// Méthode pour charger une page spécifique en fonction de la taille des pages
+	private void loadPage(int pageIndex, int pageSize) {
+	    int fromIndex = pageIndex * pageSize;
+	    int toIndex = Math.min(fromIndex + pageSize, prestatireList.size());
+
+	    if (fromIndex >= prestatireList.size()) {
+	        return; // Si aucun élément à afficher, arrêter
+	    }
+
+	    // Créer une sous-liste des éléments pour cette page
+	    ObservableList<Prestataire> pageData = FXCollections.observableArrayList(prestatireList.subList(fromIndex, toIndex));
+
+	    // Mettre à jour la TableView avec les données de la page actuelle
+	    prestataireTable.setItems(pageData);
+	}
 
 
-}
+	}	
+	
+	
+	
+	
+	
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
