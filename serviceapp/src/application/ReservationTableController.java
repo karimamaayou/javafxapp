@@ -308,7 +308,7 @@ public class ReservationTableController {
 					os.write(postData.toString().getBytes("UTF-8"));
 				}
 
-				// Gérer la réponse et télécharger le fichier généré
+				
 				try (InputStream in = conn.getInputStream(); FileOutputStream out = new FileOutputStream(file)) {
 					byte[] buffer = new byte[1024];
 					int bytesRead;

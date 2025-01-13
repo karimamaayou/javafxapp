@@ -50,7 +50,7 @@ public class SidebarController {
     	
     }
     
-    private static String activeButton = "viewClients";
+    private static String activeButton = "viewReservations";
     // Method to reset the styles of all buttons
     private void resetButtonStyles() {
 
