@@ -1,0 +1,10 @@
+/* Change the selection color */
+.table-row-cell:selected {
+    -fx-background-color: #3498db; /* Your desired color */
+}
+
+/* Change the selection text color */
+.table-row-cell:selected .text {
+    -fx-fill: #A569BD; /* Your desired text color */
+}
+

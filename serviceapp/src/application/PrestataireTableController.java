@@ -46,8 +46,6 @@ public class PrestataireTableController {
 	@FXML
 	private Button modifierButtonID;
 	
-    @FXML
-    private Button logOutButtonID;
 
 	@FXML
 	private TableColumn<Prestataire, String> nomColumn;
@@ -72,14 +70,7 @@ public class PrestataireTableController {
 	@FXML
 	private TableColumn<Prestataire, String> villeColumn;
 
-	@FXML
-	private Button viewClientsButtonID;
 
-	@FXML
-	private Button viewPrestatireButtonID;
-	
-    @FXML
-    private Button viewReservationsButtonID;
     
 	@FXML
 	private Button btn_recherche;
@@ -235,75 +226,9 @@ public class PrestataireTableController {
 
 	@FXML
 	void ajouterPrestataire(ActionEvent event) {
-		try {
-			// Load the FXML file
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("addPrestataireForm.fxml"));
-			HBox root = loader.load();
-
-			// Get the current stage (window) and set the new scene
-			Stage stage = (Stage) ajouterButtonID.getScene().getWindow();
-			stage.setScene(new Scene(root));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		DBUtils.changeScene( event, "addPrestataireForm.fxml");
 	}
 
-    @FXML
-    void viewClientsButton(ActionEvent event) {
-    	
-    	DBUtils.changeScene( event, "clientsTable.fxml");
-
-    }
-    
-    @FXML
-    void viewPrestatairesButton(ActionEvent event) {
-  
-    	DBUtils.changeScene( event, "prestataireTable.fxml");
-
-    }
-    
-    @FXML
-    void viewReservationsButton(ActionEvent event) {
-  
-    	DBUtils.changeScene( event, "reservationTable.fxml");
-
-    }
-
-    @FXML
-    void logOut(ActionEvent event) {
-    	
-		Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-		confirmationAlert.setTitle("Se Deconnecter");
-		confirmationAlert.setHeaderText(null);
-		confirmationAlert.setContentText("Êtes-vous sûr de se deconnecter ?");
-
-		// Wait for the user to respond
-		Optional<ButtonType> result = confirmationAlert.showAndWait();
-        //if he chosed ok
-		if (result.isPresent() && result.get() == ButtonType.OK) {
-			
-
-			try {
-				// Load the FXML file
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
-				HBox root = loader.load();
-
-				// Get the current stage (window) and set the new scene
-				Stage stage = (Stage) logOutButtonID.getScene().getWindow();
-				stage.setScene(new Scene(root));
-				stage.centerOnScreen();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		} 
-		//if he chosed cancel clear the selection in table
-		else {
-			// User cancelled, clear the selection
-			prestataireTable.getSelectionModel().clearSelection();
-		}
-
-    }
 
     @FXML
 	void supprimerPrestataire(ActionEvent event) {

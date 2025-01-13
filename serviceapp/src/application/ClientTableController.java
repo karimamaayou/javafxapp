@@ -163,7 +163,7 @@ public class ClientTableController {
 	}
 		
 
-	
+	 
 
 	@FXML
 	void exporter(ActionEvent event) {

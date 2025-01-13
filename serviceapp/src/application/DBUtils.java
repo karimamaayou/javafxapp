@@ -27,9 +27,18 @@ public class DBUtils {
 
         // Changement de scène
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        
+        Scene currentScene = ((Node) event.getSource()).getScene();
+        Scene newScene = new Scene(root,currentScene.getWidth(),currentScene.getHeight());
         stage.setTitle(title);
-        stage.setScene(new Scene(root, 800, 500));
+        stage.setScene(newScene);
+        newScene.getStylesheets().add(DBUtils.class.getResource("table.css").toExternalForm()); // Ajouter les styles CSS
+        
+        stage.setMaximized(true);
+        
         stage.centerOnScreen();
+        
+        
         stage.show();
     }
 }

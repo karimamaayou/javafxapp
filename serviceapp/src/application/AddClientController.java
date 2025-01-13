@@ -12,6 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -191,6 +193,11 @@ public class AddClientController {
 				ps.execute();
 
 				navigateToClientTable();
+				
+	            Alert alert = new Alert(AlertType.INFORMATION);
+	            alert.setTitle("Succès"); alert.setHeaderText(null);
+	            alert.setContentText("Ajouter client avec succès"); 
+	            alert.showAndWait();
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -235,10 +242,13 @@ public class AddClientController {
             // Get the current stage (window) and set the new scene
             Stage stage = (Stage) viewClientsButtonID.getScene().getWindow();
             stage.setScene(new Scene(root));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+ 
+  
 
 
 }

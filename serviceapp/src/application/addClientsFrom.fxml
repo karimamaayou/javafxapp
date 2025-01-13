@@ -15,32 +15,7 @@
 <HBox prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AddClientController">
    <children>
       <!-- Sidebar -->
-      <VBox prefHeight="700.0" prefWidth="144.0" style="-fx-background-color: #5687FD;">
-         <children>
-            <VBox prefHeight="227.0" prefWidth="191.0">
-               <children>
-                  <ImageView fitHeight="125.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../Desktop/WhatsApp%20Image%202024-11-23%20à%2019.16.21_69a6f61d.jpg" />
-                     </image>
-                  </ImageView>
-                  <Button fx:id="viewClientsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewClientsButton" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: white;" text="Clients" textFill="#120cc9">
-                     <cursor>
-                        <Cursor fx:constant="DEFAULT" />
-                     </cursor>
-                  </Button>
-                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Prestataires" textFill="WHITE" />
-                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Reservations" textFill="WHITE" />
-                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Historique" textFill="WHITE" />
-               </children>
-            </VBox>
-            <VBox alignment="BOTTOM_LEFT" maxHeight="3000.0" prefHeight="444.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Button alignment="TOP_LEFT" layoutY="-20.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Déconnexion" textFill="WHITE" VBox.vgrow="ALWAYS" />
-               </children>
-            </VBox>
-         </children>
-      </VBox>
+      <fx:include source="sideBar.fxml"/>
 
       <!-- Main Content -->
       <HBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS">

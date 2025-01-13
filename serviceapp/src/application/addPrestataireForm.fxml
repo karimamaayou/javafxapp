@@ -1,64 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AddPrestataireController">
+<HBox prefHeight="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AddPrestataireController">
    <children>
-      <!-- Sidebar -->
-      <VBox prefHeight="700.0" prefWidth="125.0" style="-fx-background-color: #5687FD;">
-         <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
-         
-               <children>
-                  <ImageView fitHeight="125.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../Desktop/WhatsApp%20Image%202024-11-23%20à%2019.16.21_69a6f61d.jpg" />
-                     </image>
-                     
-                  </ImageView>
-                  <Button fx:id="viewClientsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewClientsButton" prefHeight="82.0" prefWidth="126.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
-                     <cursor>
-                        <Cursor fx:constant="DEFAULT" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="viewPrestatireButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewPrestatireButton" prefHeight="25.0" prefWidth="144.0" style="-fx-background-color: ffffff;" text="Prestataires" textFill="#120cc9" />
-                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Reservations" textFill="WHITE" />
-                  <Button alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="42.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Historique" textFill="WHITE" />
-               </children>
-            </VBox>
-            <VBox alignment="BOTTOM_LEFT" maxHeight="3000.0" prefHeight="474.0" prefWidth="186.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Button alignment="TOP_LEFT" layoutY="-20.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="115.0" style="-fx-background-color: transparent;" text="Déconnexion" textFill="WHITE" VBox.vgrow="ALWAYS" />
-               </children>
-            </VBox>
-         </children>
-      </VBox>
-
+      <fx:include source="sideBar.fxml" />
       <!-- Main Content -->
-      <HBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
+      <HBox alignment="CENTER" prefWidth="856.0" spacing="20.0" HBox.hgrow="ALWAYS">
          <children>
             <!-- Form Section -->
-            <VBox alignment="CENTER" prefHeight="700.0" prefWidth="400.0" spacing="15.0">
+            <VBox alignment="CENTER" prefHeight="600.0" prefWidth="856.0" spacing="15.0">
                <children>
-                  <Label prefHeight="57.0" prefWidth="179.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter de Prestataire">
-                     <font>
-                        <Font name="Bauhaus 93" size="1.0" />
-                     </font>
-                  </Label>
                   <!-- Form Fields -->
-                  <VBox spacing="10.0">
+                  <VBox alignment="TOP_CENTER">
+                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                        <children>
+                           <Label prefHeight="57.0" prefWidth="200.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter de Prestataire">
+                              <font>
+                                 <Font name="Bauhaus 93" size="1.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </VBox>
                      <!-- Employee Name -->
-                     <VBox>
+                     <VBox maxWidth="400.0">
                         <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Nom Complet" />
                         <HBox prefHeight="25.0" prefWidth="327.0" spacing="10.0">
                            <TextField fx:id="firstNameField" prefHeight="25.0" prefWidth="165.0" promptText="First" />
@@ -68,52 +40,56 @@
                      </VBox>
 
                      <!-- Ville -->
-                     <VBox>
+                     <VBox maxWidth="400.0">
                         <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ville" />
-                        <ComboBox fx:id="villeField" prefHeight="25.0" prefWidth="364.0" />
+                        <ComboBox fx:id="villeField" prefHeight="25.0" prefWidth="351.0" />
                         <Label fx:id="villeErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
 
                      <!-- Numéro de téléphone -->
-                     <VBox>
+                     <VBox maxWidth="400.0">
                         <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Numéro de téléphone" />
-                        <TextField fx:id="phoneField" prefWidth="320.0" promptText="Enter phone number" />
+                        <TextField fx:id="phoneField" maxWidth="351.0" prefWidth="351.0" promptText="Enter phone number" />
                         <Label fx:id="phoneErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
 
                      <!-- Métier -->
-                     <VBox prefHeight="49.0" prefWidth="360.0">
+                     <VBox maxWidth="400.0" prefHeight="49.0" prefWidth="360.0">
                         <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Métier" />
-                        <ComboBox fx:id="MétierField" prefHeight="25.0" prefWidth="376.0" />
+                        <ComboBox fx:id="MétierField" maxWidth="351.0" prefHeight="25.0" prefWidth="376.0" />
                         <Label fx:id="métierErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
-                     <VBox prefHeight="71.0" prefWidth="360.0">
+                     <VBox maxWidth="400.0" prefHeight="71.0" prefWidth="360.0">
                         <children>
                            <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Description " />
-                           <TextField fx:id="descriptionField" promptText="description" />
+                           <TextField fx:id="descriptionField" maxWidth="351.0" promptText="description" />
                            <Label fx:id="descriptionErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" />
                         </children>
                      </VBox>
 
                      <!-- Email Address -->
-                     <VBox>
+                     <VBox maxWidth="400.0">
                         <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Email Address" />
-                        <TextField fx:id="emailField" prefWidth="320.0" promptText="Enter email address" />
+                        <TextField fx:id="emailField" maxWidth="351.0" prefWidth="320.0" promptText="Enter email address" />
                         <Label fx:id="emailErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
 
                      <!-- Prix (min et max côte à côte) -->
-                     <VBox>
-                        <Label prefHeight="20.0" prefWidth="46.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="tarif " />
+                     <VBox maxWidth="400.0">
+                        <Label prefHeight="20.0" prefWidth="46.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Tarif " />
                         <HBox spacing="10.0">
-                           <TextField fx:id="tarifField" prefHeight="25.0" prefWidth="371.0" promptText="tarif" />
+                           <TextField fx:id="tarifField" maxWidth="351.0" prefHeight="25.0" prefWidth="371.0" promptText="tarif" />
                         </HBox>
                         <Label fx:id="priceErrorLabel" style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
                      </VBox>
+                     <VBox maxWidth="400.0" prefHeight="150.0" prefWidth="100.0">
+                        <children>
+         
+                           <!-- Submit Button -->
+                           <Button fx:id="addButtonID" onAction="#addPrestataire" prefWidth="351.0" style="-fx-background-color: #5687FD; -fx-text-fill: white; -fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter" />
+                        </children>
+                     </VBox>
                   </VBox>
-
-                  <!-- Submit Button -->
-                  <Button fx:id="addButtonID" onAction="#addPrestataire" prefWidth="150.0" style="-fx-background-color: #5687FD; -fx-text-fill: white; -fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
