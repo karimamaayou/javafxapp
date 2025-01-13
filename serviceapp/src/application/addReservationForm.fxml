@@ -22,7 +22,7 @@
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label prefHeight="57.0" prefWidth="179.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter de Prestataire">
+                              <Label prefHeight="57.0" prefWidth="179.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter de Reservation">
                                  <font>
                                     <Font name="Bauhaus 93" size="1.0" />
                                  </font>
