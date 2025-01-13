@@ -238,6 +238,9 @@ public class ClientTableController {
 				// User confirmed, delete the client
 				deleteClientFromDatabase(selectedClient);
 				clientList.remove(selectedClient);
+		        // Refresh the table after modification
+		        clientTable.refresh();
+		        getAllClients();
 			} 
 			//if he chosed cancel clear the selection in table
 			else {

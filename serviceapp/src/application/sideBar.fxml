@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="400.0" minWidth="144.0" prefHeight="400.0" prefWidth="144.0" style="-fx-background-color: #5687FD;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SidebarController">
+<VBox minHeight="400.0" minWidth="144.0" prefHeight="400.0" prefWidth="144.0" style="-fx-background-color: #5687FD;" stylesheets="@dashboardCss.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SidebarController">
    <children>
       <VBox prefHeight="205.0" prefWidth="123.0">
          <children>
@@ -23,7 +23,12 @@
                   </ImageView>
                </children>
             </VBox>
-            <Button fx:id="viewClientsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewClientsButton" prefHeight="25.0" prefWidth="144.0" style="-fx-background-color: white;" text="Clients" textFill="#120cc9">
+            <Button fx:id="viewDashBoardButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewDashBoardButton" prefHeight="25.0" prefWidth="144.0" styleClass="button-hover" stylesheets="@dashboardCss.css" text="Dashboard" textFill="#120cc9">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </Button>
+            <Button fx:id="viewClientsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewClientsButton" prefHeight="25.0" prefWidth="144.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor>

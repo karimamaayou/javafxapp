@@ -1,0 +1,9 @@
+.button-hover {
+    -fx-background-color: transparent; /* Default background color */
+    -fx-text-fill: white;       /* Default text color */
+}
+
+.button-hover:hover {
+    -fx-background-color: white; /* Background color on hover */
+    -fx-text-fill: #120cc9;          /* Text color on hover */
+}

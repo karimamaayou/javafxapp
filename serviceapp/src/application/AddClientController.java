@@ -35,8 +35,7 @@ public class AddClientController {
     private TextField firstNameField;
     
 
-    @FXML
-    private Button viewClientsButtonID;
+
 
     @FXML
     private TextField lastNameField;
@@ -52,13 +51,7 @@ public class AddClientController {
     
     private Map<String, Integer> villeMap = new HashMap<>();// list pour affecter les id ou villes corespondant
 	    	    
-	@FXML
-	
-	void viewClientsButton(ActionEvent event) {  
-		
-		navigateToClientTable();
 
-	    }
     @FXML
     private ComboBox<String> villeField;
 
@@ -192,7 +185,7 @@ public class AddClientController {
 				ps.setString(5, telephone);
 				ps.execute();
 
-				navigateToClientTable();
+				DBUtils.changeScene( event, "clientsTable.fxml");
 				
 	            Alert alert = new Alert(AlertType.INFORMATION);
 	            alert.setTitle("Succès"); alert.setHeaderText(null);
@@ -233,20 +226,7 @@ public class AddClientController {
         }
     }
    
-    private void navigateToClientTable() {
-    	try {
-            // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("clientsTable.fxml"));
-            HBox root = loader.load();
 
-            // Get the current stage (window) and set the new scene
-            Stage stage = (Stage) viewClientsButtonID.getScene().getWindow();
-            stage.setScene(new Scene(root));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
  
   
 

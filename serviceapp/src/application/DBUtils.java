@@ -8,18 +8,27 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DBUtils {
+
+	
+	
+    // A map to cache loaded scenes
+    private static final Map<String, Parent> sceneCache = new HashMap<>();
 
     // Cette méthode permet de changer de scène
     public static void changeScene(ActionEvent event, String fxmlFile) {
     	
     	String title= "Bladna Services";
-        Parent root = null;
+    	
+    	Parent root = sceneCache.get(fxmlFile);
 
         try {
             FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource(fxmlFile));
             root = loader.load();
+            sceneCache.put(fxmlFile, root); // Cache the loaded scene
             
         } catch (IOException e) {
             e.printStackTrace();
