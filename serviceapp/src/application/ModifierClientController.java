@@ -20,6 +20,8 @@ public class ModifierClientController {
     @FXML
     private Label emailErrorLabel;
 
+    
+    
     @FXML
     private TextField emailField;
 
