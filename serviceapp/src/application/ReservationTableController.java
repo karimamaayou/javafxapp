@@ -9,6 +9,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
@@ -24,6 +25,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ReservationTableController {
+	@FXML
+	private TableColumn<Reservation, String> metierColumn;
 
 	@FXML
 	private ChoiceBox<Integer> pageSizeChoiceBox; // For pagination
@@ -85,6 +88,7 @@ public class ReservationTableController {
 		dateFinColumn.setCellValueFactory(new PropertyValueFactory<>("dateFin"));
 		statutColumn.setCellValueFactory(new PropertyValueFactory<>("statut"));
 		prix_Column.setCellValueFactory(new PropertyValueFactory<>("prix"));
+		metierColumn.setCellValueFactory(new PropertyValueFactory<>("metier"));
 	}
 
 	private void setupSearchFunctionality() {
@@ -162,12 +166,18 @@ public class ReservationTableController {
 	public void getAllReservations() {
 		reservationList.clear();
 		Connection connection = MysqlConnection.getDBConnection();
-		String sql = "SELECT c.client_id, CONCAT(c.nom, ' ', c.prenom) AS nomCompletClient, "
-				+ "c.telephone AS telephoneClient, p.prestataire_id, CONCAT(p.nom, ' ', p.prenom) AS nomCompletPrestataire, "
-				+ "p.telephone AS telephonePrestataire, r.reservation_id, r.date_debut as dateDebut, r.date_fin as dateFin, "
-				+ "s.statut, r.prix FROM client c " + "JOIN reservation r ON c.client_id = r.client_id "
-				+ "JOIN prestataire p ON p.prestataire_id = r.prestataire_id "
-				+ "JOIN statut s ON s.statut_id = r.statut_id;";
+		String sql = " SELECT c.client_id, CONCAT(c.nom, ' ', c.prenom) AS nomCompletClient, \r\n"
+				+ "       c.telephone AS telephoneClient, p.prestataire_id, \r\n"
+				+ "       CONCAT(p.nom, ' ', p.prenom) AS nomCompletPrestataire, \r\n"
+				+ "       m.metier AS metier, p.telephone AS telephonePrestataire, \r\n"
+				+ "       r.reservation_id, r.date_debut AS dateDebut, \r\n"
+				+ "       r.date_fin AS dateFin, s.statut, r.prix\r\n"
+				+ "FROM client c\r\n"
+				+ "JOIN reservation r ON c.client_id = r.client_id\r\n"
+				+ "JOIN prestataire p ON p.prestataire_id = r.prestataire_id\r\n"
+				+ "JOIN metier m ON p.metier_id = m.metier_id\r\n"
+				+ "JOIN statut s ON s.statut_id = r.statut_id;  -- Fixed the space issue\r\n"
+				+ "";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet results = ps.executeQuery();
@@ -176,7 +186,7 @@ public class ReservationTableController {
 						results.getString("telephoneClient"), results.getInt("prestataire_id"),
 						results.getString("nomCompletPrestataire"), results.getString("telephonePrestataire"),
 						results.getInt("reservation_id"), results.getString("statut"), results.getString("dateDebut"),
-						results.getString("dateFin"), results.getDouble("prix")));
+						results.getString("dateFin"), results.getDouble("prix"),results.getString("metier") ));
 			}
 			updatePagination();
 		} catch (Exception e) {
@@ -212,51 +222,121 @@ public class ReservationTableController {
 
 	@FXML
 	void supprimerReservation(ActionEvent event) {
+		Reservation selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
+		if (selectedReservation == null) {
+			showAlert(Alert.AlertType.WARNING, "Suppression impossible", "Aucune réservation sélectionnée !");
+			return;
+		}
+		Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer cette réservation ?", ButtonType.YES,
+				ButtonType.NO);
+		Optional<ButtonType> result = confirmation.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.YES) {
+			String query = "DELETE FROM reservation WHERE reservation_id = ?";
+			try (Connection connection = MysqlConnection.getDBConnection();
+					PreparedStatement ps = connection.prepareStatement(query)) {
+				ps.setInt(1, selectedReservation.getIdReservtion());
+				ps.executeUpdate();
+				// Remove from reservationList
+				reservationList.remove(selectedReservation);
+				// Refresh the table view to reflect the change
+				reservationTable.setItems(reservationList);
+				showAlert(Alert.AlertType.INFORMATION, "Suppression réussie",
+						"La réservation a été supprimée avec succès.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				showAlert(Alert.AlertType.ERROR, "Erreur de suppression",
+						"Une erreur est survenue lors de la suppression.");
+			}
+		}
+	}
+
+	@FXML
+	void changeStatut(ActionEvent event) {
+	    // Get the selected reservation from the TableView
 	    Reservation selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
+
+	    // Check if a reservation is selected
 	    if (selectedReservation == null) {
-	        showAlert(Alert.AlertType.WARNING, "Suppression impossible", "Aucune réservation sélectionnée !");
+	        showAlert(Alert.AlertType.WARNING, "Aucune sélection", "Veuillez sélectionner une réservation à mettre à jour.");
 	        return;
 	    }
-	    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer cette réservation ?", ButtonType.YES,
-	            ButtonType.NO);
-	    Optional<ButtonType> result = confirmation.showAndWait();
-	    if (result.isPresent() && result.get() == ButtonType.YES) {
-	        String query = "DELETE FROM reservation WHERE reservation_id = ?";
-	        try (Connection connection = MysqlConnection.getDBConnection();
-	                PreparedStatement ps = connection.prepareStatement(query)) {
-	            ps.setInt(1, selectedReservation.getIdReservtion());
-	            ps.executeUpdate();
-	            // Remove from reservationList
-	            reservationList.remove(selectedReservation);
-	            // Refresh the table view to reflect the change
-	            reservationTable.setItems(reservationList);
-	            showAlert(Alert.AlertType.INFORMATION, "Suppression réussie", "La réservation a été supprimée avec succès.");
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            showAlert(Alert.AlertType.ERROR, "Erreur de suppression", "Une erreur est survenue lors de la suppression.");
+
+	    // Display a dialog to choose the new status
+	    ChoiceDialog<String> dialog = new ChoiceDialog<>("Terminer", "Annuler");
+	    dialog.setTitle("Changer le statut");
+	    dialog.setHeaderText("Sélectionnez le nouveau statut pour cette réservation");
+	    dialog.setContentText("Statut :");
+	    Optional<String> result = dialog.showAndWait();
+
+	    if (result.isEmpty()) {
+	        showAlert(Alert.AlertType.INFORMATION, "Action annulée", "Aucun changement n'a été effectué.");
+	        return;
+	    }
+
+	    String newStatut = result.get(); // New status chosen
+	    Connection connection = null;
+	    PreparedStatement psInsertHistorique = null;
+	    PreparedStatement psDeleteReservation = null;
+
+	    try {
+	        connection = MysqlConnection.getDBConnection();
+	        connection.setAutoCommit(false); // Start a transaction
+
+	        // Insert into the history table
+	        String insertHistoriqueQuery = "INSERT INTO historique (nomClient, tele_Client, nomPrestataire, tele_Prestataire, date_debut, date_fin, date_archive, metier, prix, statut) VALUES (?, ?, ?, ?, ?, ?, CURDATE(), ?, ?, ?)";
+	        psInsertHistorique = connection.prepareStatement(insertHistoriqueQuery);
+	        psInsertHistorique.setString(1, selectedReservation.getNomCompletClient());
+	        psInsertHistorique.setString(2, selectedReservation.getTelephoneClient());
+	        psInsertHistorique.setString(3, selectedReservation.getNomCompletPrestataire());
+	        psInsertHistorique.setString(4, selectedReservation.getTelephonePrestataire());
+	        psInsertHistorique.setString(5, selectedReservation.getDateDebut());
+	        psInsertHistorique.setString(6, selectedReservation.getDateFin());
+	        psInsertHistorique.setString(7, selectedReservation.getMetier());
+	        psInsertHistorique.setDouble(8, selectedReservation.getPrix());
+	        psInsertHistorique.setString(9, newStatut); // Save the new status
+	        psInsertHistorique.executeUpdate();
+
+	        // Delete the reservation from the `reservation` table
+	        String deleteReservationQuery = "DELETE FROM reservation WHERE reservation_id = ?";
+	        psDeleteReservation = connection.prepareStatement(deleteReservationQuery);
+	        psDeleteReservation.setInt(1, selectedReservation.getIdReservtion());
+	        psDeleteReservation.executeUpdate();
+
+	        // Remove the reservation from the local list
+	        reservationList.remove(selectedReservation);
+
+	        connection.commit(); // Commit transaction
+
+	        // Refresh the table to reflect the changes
+	        updatePagination();
+
+	        showAlert(Alert.AlertType.INFORMATION, "Mise à jour réussie", "La réservation a été archivée et supprimée avec succès.");
+	    } catch (Exception e) {
+	        if (connection != null) {
+	            try {
+	                connection.rollback(); // Rollback transaction in case of error
+	            } catch (SQLException rollbackEx) {
+	                rollbackEx.printStackTrace();
+	            }
+	        }
+	        e.printStackTrace();
+	        showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors de la mise à jour de la réservation.");
+	    } finally {
+	        try {
+	            if (psInsertHistorique != null) psInsertHistorique.close();
+	            if (psDeleteReservation != null) psDeleteReservation.close();
+	            if (connection != null) connection.close();
+	        } catch (SQLException closeEx) {
+	            closeEx.printStackTrace();
 	        }
 	    }
 	}
 
 
-	@FXML
-	void changeStatut(ActionEvent event) {
-		Reservation selectedReservation = reservationTable.getSelectionModel().getSelectedItem();
-		if (selectedReservation == null) {
-			showAlert(Alert.AlertType.WARNING, "Changement de statut impossible", "Aucune réservation sélectionnée !");
-			return;
-		}
-		Dialog<String> dialog = new Dialog<>();
-		dialog.setTitle("Changer le statut");
-		ComboBox<String> comboBox = new ComboBox<>(
-				FXCollections.observableArrayList("Terminer", "Annuler", "En cours"));
-		comboBox.setValue(selectedReservation.getStatut());
-		dialog.getDialogPane().setContent(comboBox);
-		dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-		dialog.setResultConverter(button -> button == ButtonType.OK ? comboBox.getValue() : null);
-		Optional<String> result = dialog.showAndWait();
-		result.ifPresent(newStatut -> updateReservationStatut(selectedReservation, newStatut));
-	}
+
+
+
+
 
 	private void updateReservationStatut(Reservation reservation, String newStatut) {
 		String query = "UPDATE reservation SET statut_id = (SELECT statut_id FROM statut WHERE statut = ?) WHERE reservation_id = ?";
@@ -308,7 +388,7 @@ public class ReservationTableController {
 					os.write(postData.toString().getBytes("UTF-8"));
 				}
 
-				
+				// Gérer la réponse et télécharger le fichier généré
 				try (InputStream in = conn.getInputStream(); FileOutputStream out = new FileOutputStream(file)) {
 					byte[] buffer = new byte[1024];
 					int bytesRead;
@@ -338,4 +418,6 @@ public class ReservationTableController {
 		alert.setContentText(content);
 		alert.showAndWait();
 	}
+	
+
 }

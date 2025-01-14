@@ -16,11 +16,12 @@ public class Reservation {
 	String date_debutReservation;
 	String date_finReservation;
 	private Double prix;
+	String metier;
 
 	// Constructeur avec 12 paramètres modifiés
 	public Reservation(int idClient, String nomCompletClient, String telephoneClient, int idPrestataire,
 			String nomCompletPrestataire, String telephonePrestataire, int idReservtion, String statut,
-			String date_debutReservation, String date_finReservation, Double prix) {
+			String date_debutReservation, String date_finReservation, Double prix, String metier) {
 
 		this.idClient = idClient;
 		this.nomCompletClient = nomCompletClient;
@@ -33,9 +34,17 @@ public class Reservation {
 		this.date_debutReservation = date_debutReservation;
 		this.date_finReservation = date_finReservation;
 		this.prix = prix;
+		this.metier=metier;
 	}
 
 	// Getters and Setters
+
+	public void setMetier(String metier) {
+		this.metier = metier;
+	}
+	public String getMetier() {
+		return metier;
+	}
 
 	public int getIdClient() {
 		return idClient;
@@ -129,4 +138,6 @@ public class Reservation {
 	public void setPrix(Double prix) {
 		this.prix = prix;
 	}
+
+
 }

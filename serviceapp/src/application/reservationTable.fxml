@@ -73,6 +73,7 @@
                   <TableColumn fx:id="telephoneClientColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="telephone" />
                   <TableColumn fx:id="nomCompletePrestataireColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="nom Prestataire" />
                   <TableColumn fx:id="telephonePrestataireColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="telephone" />
+                  <TableColumn fx:id="metierColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="metier" />
                   <TableColumn fx:id="dateDebutColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="date debut" />
                   <TableColumn fx:id="dateFinColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="date fin" />
                   <TableColumn fx:id="prix_Column" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="prix" />
