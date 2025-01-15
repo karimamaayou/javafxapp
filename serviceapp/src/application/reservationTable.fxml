@@ -42,7 +42,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                            <graphic>
-                              <FontAwesomeIcon glyphName="PLUS" tabSize="0" wrappingWidth="7.1427977085113525" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="PLUS" tabSize="0" text="" wrappingWidth="7.1427977085113525" />
                            </graphic>
                         </Button>
                         <Button fx:id="modifierButtonID2" layoutX="655.0" layoutY="241.0" mnemonicParsing="false" onAction="#modifierReservation" style="-fx-background-color: #5687FD;" text="Modifier" textFill="WHITE">
@@ -53,7 +53,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                            <graphic>
-                              <FontAwesomeIcon glyphName="EDIT" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="EDIT" text="" />
                            </graphic>
                         </Button>
                         <Button fx:id="supprimerButtonID" layoutX="710.0" layoutY="241.0" mnemonicParsing="false" onAction="#supprimerReservation" style="-fx-background-color: red;" text="Supprimer" textFill="WHITE">
@@ -64,7 +64,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                            <graphic>
-                              <FontAwesomeIcon glyphName="TRASH" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="TRASH" text="" />
                            </graphic>
                         </Button>
                         <Button fx:id="statutButtonID" layoutX="763.0" layoutY="241.0" mnemonicParsing="false" onAction="#changeStatut" style="-fx-background-color: green;" text="Statut" textFill="WHITE">
@@ -75,7 +75,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                            <graphic>
-                              <FontAwesomeIcon glyphName="CHECK" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="CHECK" text="" />
                            </graphic>
                         </Button>
                         <Button fx:id="exporterButtonID" mnemonicParsing="false" onAction="#exporter" style="-fx-background-color: #50C878;" text="Exporter" textFill="WHITE">
@@ -86,7 +86,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                            <graphic>
-                              <FontAwesomeIcon glyphName="DOWNLOAD" />
+                              <FontAwesomeIcon fill="WHITE" glyphName="DOWNLOAD" text="" />
                            </graphic>
                         </Button>
                      </children>
