@@ -3,6 +3,8 @@ package application;
 import java.io.IOException;
 import java.util.Optional;
 
+
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,18 +12,38 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class SidebarController {
 
+
+
+public class SidebarController {
+	
+    @FXML
+    private Label icon1;
+
+    @FXML
+    private Label icon2;
+
+    @FXML
+    private Label icon3;
+
+    @FXML
+    private Label icon4;
+
+    @FXML
+    private Label icon5;
+    
     @FXML
     private Button logOutButtonID;
     @FXML
     private Button viewDashBoardButtonID;
-
+    @FXML
+    private Button viewHistoriqueButtonID;
     @FXML
     private Button viewClientsButtonID;
 
@@ -41,6 +63,9 @@ public class SidebarController {
     Image logoImage = new Image(getClass().getResource("resources/images/logo.png").toExternalForm());
     logo.setImage(logoImage);
     
+  
+    //path resources/icons/dashboard.svg"
+    
     resetButtonStyles();
     if (activeButton.equals("viewDashBoard")) {
     	viewDashBoardButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
@@ -51,7 +76,10 @@ public class SidebarController {
         viewPrestatiaresButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
     } else if (activeButton.equals("viewReservations")) {
         viewReservationsButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
+    } else if (activeButton.equals("viewHistorique")) {
+    	viewHistoriqueButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
     }
+    
     	
     }
     
@@ -59,10 +87,10 @@ public class SidebarController {
     // Method to reset the styles of all buttons
     private void resetButtonStyles() {
     	viewDashBoardButtonID.setStyle("-fx-background-color: transparent; -fx-text-fill: white;button-hover;");
-    	viewDashBoardButtonID.getStyleClass().add("button-hover");
         viewClientsButtonID.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
         viewPrestatiaresButtonID.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
         viewReservationsButtonID.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
+        viewHistoriqueButtonID.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
         
         
 
@@ -98,6 +126,13 @@ public class SidebarController {
     	activeButton = "viewReservations";
     	DBUtils.changeScene( event, "reservationTable.fxml");
 
+    }
+    
+    @FXML
+    void viewHistoriqueButton(ActionEvent event) {
+    	
+    	activeButton = "viewHistorique";
+    	DBUtils.changeScene( event, "historiqueTable.fxml");
     }
 
     @FXML

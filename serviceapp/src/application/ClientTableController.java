@@ -168,6 +168,7 @@ public class ClientTableController {
 	@FXML
 	void exporter(ActionEvent event) {
 	    try {
+	    	System.out.println(clientList);
 	        // Prepare data to send to the PHP script
 	        StringBuilder postData = new StringBuilder();
 	        for (Client client : clientList) {
@@ -220,6 +221,9 @@ public class ClientTableController {
 
 	@FXML
 	void supprimerClient(ActionEvent event) {
+		
+
+		
 		// Get the selected client from the table
 		Client selectedClient = clientTable.getSelectionModel().getSelectedItem();
 
