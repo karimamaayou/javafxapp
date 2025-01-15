@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="400.0" minWidth="144.0" prefHeight="400.0" prefWidth="144.0" style="-fx-background-color: #5687FD;" stylesheets="@dashboardCss.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SidebarController">
+<VBox minHeight="400.0" minWidth="144.0" prefHeight="400.0" prefWidth="144.0" style="-fx-background-color: #5687FD;" stylesheets="@sideBarCSS.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SidebarController">
    <children>
       <VBox prefHeight="205.0" prefWidth="123.0">
          <children>
@@ -24,45 +24,60 @@
                   </ImageView>
                </children>
             </VBox>
-            <Button fx:id="viewDashBoardButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewDashBoardButton" prefHeight="25.0" prefWidth="144.0" styleClass="button-hover" stylesheets="@dashboardCss.css" text="Dashboard" textFill="#120cc9">
+            <Button fx:id="viewDashBoardButtonID" alignment="TOP_LEFT" graphicTextGap="1.0" mnemonicParsing="false" onAction="#viewDashBoardButton" prefHeight="25.0" prefWidth="144.0" styleClass="button-hover" stylesheets="@dashboardCss.css" text="Dashboard" textFill="#120cc9">
                <cursor>
-                  <Cursor fx:constant="DEFAULT" />
+                  <Cursor fx:constant="HAND" />
                </cursor>
                <graphic>
-                  <Label fx:id="icon1" />
+                  <FontAwesomeIcon fx:id="icon1" fill="WHITE" glyphName="PIE_CHART" />
                </graphic>
             </Button>
-            <Button fx:id="viewClientsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewClientsButton" prefHeight="25.0" prefWidth="144.0" style="-fx-background-color: transparent;" text="Clients" textFill="WHITE">
+            <Button fx:id="viewClientsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewClientsButton" prefHeight="25.0" prefWidth="144.0" styleClass="button-hover" text="Clients" textFill="WHITE">
                <cursor>
-                  <Cursor fx:constant="DEFAULT" />
+                  <Cursor fx:constant="HAND" />
                </cursor>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
                <graphic>
-                  <Label fx:id="icon2" />
+                  <FontAwesomeIcon fx:id="icon2" fill="WHITE" glyphName="USER" />
                </graphic>
             </Button>
-            <Button fx:id="viewPrestatiaresButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewPrestatairesButton" prefHeight="25.0" prefWidth="148.0" style="-fx-background-color: transparent;" text="Prestataires" textFill="WHITE">
+            <Button fx:id="viewPrestatiaresButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewPrestatairesButton" prefHeight="25.0" prefWidth="148.0" styleClass="button-hover" text="Prestataires" textFill="WHITE">
                <graphic>
-                  <Label fx:id="icon3" />
-               </graphic></Button>
-            <Button fx:id="viewReservationsButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewReservationsButton" prefHeight="25.0" prefWidth="153.0" style="-fx-background-color: transparent;" text="Reservations" textFill="WHITE">
+                  <FontAwesomeIcon fx:id="icon3" fill="WHITE" glyphName="USER_MD" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="viewReservationsButtonID" alignment="TOP_LEFT" graphicTextGap="2.0" mnemonicParsing="false" onAction="#viewReservationsButton" prefHeight="25.0" prefWidth="153.0" styleClass="button-hover" text="Reservations" textFill="WHITE">
                <graphic>
-                  <Label fx:id="icon4" />
-               </graphic></Button>
-            <Button fx:id="viewHistoriqueButtonID" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#viewHistoriqueButton" prefHeight="25.0" prefWidth="155.0" style="-fx-background-color: transparent;" text="Historique" textFill="WHITE">
+                  <FontAwesomeIcon fx:id="icon4" fill="WHITE" glyphName="CALENDAR" text="" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="viewHistoriqueButtonID" alignment="TOP_LEFT" graphicTextGap="1.0" mnemonicParsing="false" onAction="#viewHistoriqueButton" prefHeight="25.0" prefWidth="155.0" styleClass="button-hover" text="Historique" textFill="WHITE">
                <graphic>
-                  <Label fx:id="icon5" />
-               </graphic></Button>
+                  <FontAwesomeIcon fx:id="icon5" fill="WHITE" glyphName="ARCHIVE" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
          </children>
       </VBox>
       <VBox alignment="BOTTOM_LEFT" maxHeight="3000.0" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button fx:id="logOutButtonID" alignment="BASELINE_LEFT" layoutY="-20.0" mnemonicParsing="false" onAction="#logOut" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: red;" text="Déconnexion" textFill="WHITE" VBox.vgrow="ALWAYS">
+            <Button fx:id="logOutButtonID" alignment="BASELINE_LEFT" layoutY="-20.0" maxHeight="20.0" mnemonicParsing="false" onAction="#logOut" prefHeight="20.0" prefWidth="115.0" style="-fx-background-color: red;" text="Déconnexion" textFill="WHITE">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
          </children>
       </VBox>

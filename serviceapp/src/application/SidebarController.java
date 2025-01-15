@@ -2,9 +2,7 @@ package application;
 
 import java.io.IOException;
 import java.util.Optional;
-
-
-
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,10 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -24,19 +22,19 @@ import javafx.stage.Stage;
 public class SidebarController {
 	
     @FXML
-    private Label icon1;
+    private FontAwesomeIcon icon1;
 
     @FXML
-    private Label icon2;
+    private FontAwesomeIcon icon2;
 
     @FXML
-    private Label icon3;
+    private FontAwesomeIcon icon3;
 
     @FXML
-    private Label icon4;
+    private FontAwesomeIcon icon4;
 
     @FXML
-    private Label icon5;
+    private FontAwesomeIcon icon5;
     
     @FXML
     private Button logOutButtonID;
@@ -59,43 +57,68 @@ public class SidebarController {
 
     @FXML
     public void initialize() {
+    	
+    
+
     
     Image logoImage = new Image(getClass().getResource("resources/images/logo.png").toExternalForm());
     logo.setImage(logoImage);
     
-  
-    //path resources/icons/dashboard.svg"
     
-    resetButtonStyles();
     if (activeButton.equals("viewDashBoard")) {
     	viewDashBoardButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
+    	icon1.setFill(Color.web("#120cc9"));
     }
     else if (activeButton.equals("viewClients")) {
         viewClientsButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
+        icon2.setFill(Color.web("#120cc9"));
     } else if (activeButton.equals("viewPrestatiares")) {
         viewPrestatiaresButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
+        icon3.setFill(Color.web("#120cc9"));
     } else if (activeButton.equals("viewReservations")) {
         viewReservationsButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
+        icon4.setFill(Color.web("#120cc9"));
     } else if (activeButton.equals("viewHistorique")) {
     	viewHistoriqueButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
+    	icon5.setFill(Color.web("#120cc9"));
     }
+    
+    iconHover();
     
     	
     }
     
     private static String activeButton = "viewDashBoard";
     // Method to reset the styles of all buttons
-    private void resetButtonStyles() {
-    	viewDashBoardButtonID.setStyle("-fx-background-color: transparent; -fx-text-fill: white;button-hover;");
-        viewClientsButtonID.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
-        viewPrestatiaresButtonID.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
-        viewReservationsButtonID.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
-        viewHistoriqueButtonID.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
-        
-        
 
+    //used to implement the hover effect on icons
+    private void iconHover() {
+    	if(!activeButton.equals("viewDashBoard")) {
+    		
+        	viewDashBoardButtonID.setOnMouseEntered(event -> icon1.setFill(Color.web("#120cc9")));
+        	viewDashBoardButtonID.setOnMouseExited(event -> icon1.setFill(Color.web("#ffffff")));
+    	}
+    	if(!activeButton.equals("viewClients")) {
+    		
+    	    viewClientsButtonID.setOnMouseEntered(event -> icon2.setFill(Color.web("#120cc9")));
+    	    viewClientsButtonID.setOnMouseExited(event -> icon2.setFill(Color.web("#ffffff")));
+    	}
+    	if(!activeButton.equals("viewPrestatiares")) {
+    		
+         	viewPrestatiaresButtonID.setOnMouseEntered(event -> icon3.setFill(Color.web("#120cc9")));
+    	    viewPrestatiaresButtonID.setOnMouseExited(event -> icon3.setFill(Color.web("#ffffff")));
+    	}
+    	if(!activeButton.equals("viewReservations")) {
+    		
+    	    viewReservationsButtonID.setOnMouseEntered(event -> icon4.setFill(Color.web("#120cc9")));
+         	viewReservationsButtonID.setOnMouseExited(event -> icon4.setFill(Color.web("#ffffff")));
+    	}
+    	if(!activeButton.equals("viewHistorique")) {
+    		
+    	    viewHistoriqueButtonID.setOnMouseEntered(event -> icon5.setFill(Color.web("#120cc9")));
+    	    viewHistoriqueButtonID.setOnMouseExited(event -> icon5.setFill(Color.web("#ffffff")));
+    	}
     }
-
 
     @FXML
     void viewDashBoardButton(ActionEvent event) {
@@ -164,9 +187,11 @@ public class SidebarController {
 			}
 
 		} 
-		//if he chosed cancel clear the selection in table
+	
 		
 
     }
+
+
 
 }
