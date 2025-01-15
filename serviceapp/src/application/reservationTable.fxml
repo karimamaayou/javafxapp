@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Pagination?>
@@ -36,26 +38,56 @@
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <graphic>
+                              <FontAwesomeIcon glyphName="PLUS" tabSize="0" wrappingWidth="7.1427977085113525" />
+                           </graphic>
                         </Button>
                         <Button fx:id="modifierButtonID2" layoutX="655.0" layoutY="241.0" mnemonicParsing="false" onAction="#modifierReservation" style="-fx-background-color: #5687FD;" text="Modifier" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <graphic>
+                              <FontAwesomeIcon glyphName="EDIT" />
+                           </graphic>
                         </Button>
                         <Button fx:id="supprimerButtonID" layoutX="710.0" layoutY="241.0" mnemonicParsing="false" onAction="#supprimerReservation" style="-fx-background-color: red;" text="Supprimer" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <graphic>
+                              <FontAwesomeIcon glyphName="TRASH" />
+                           </graphic>
                         </Button>
                         <Button fx:id="statutButtonID" layoutX="763.0" layoutY="241.0" mnemonicParsing="false" onAction="#changeStatut" style="-fx-background-color: green;" text="Statut" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <graphic>
+                              <FontAwesomeIcon glyphName="CHECK" />
+                           </graphic>
                         </Button>
                         <Button fx:id="exporterButtonID" mnemonicParsing="false" onAction="#exporter" style="-fx-background-color: #50C878;" text="Exporter" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <graphic>
+                              <FontAwesomeIcon glyphName="DOWNLOAD" />
+                           </graphic>
                         </Button>
                      </children>
                      <HBox.margin>

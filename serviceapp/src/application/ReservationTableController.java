@@ -331,13 +331,6 @@ public class ReservationTableController {
 	        }
 	    }
 	}
-
-
-
-
-
-
-
 	private void updateReservationStatut(Reservation reservation, String newStatut) {
 		String query = "UPDATE reservation SET statut_id = (SELECT statut_id FROM statut WHERE statut = ?) WHERE reservation_id = ?";
 		try (Connection connection = MysqlConnection.getDBConnection();
