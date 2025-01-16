@@ -21,7 +21,7 @@
             <!-- Form Section -->
             <VBox alignment="CENTER" prefHeight="700.0" prefWidth="400.0" spacing="15.0">
                <children>
-                  <Label prefHeight="74.0" prefWidth="242.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text=" Ajouter paramètres">
+                  <Label prefHeight="74.0" prefWidth="242.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text=" Ajouter parametres">
                      <font>
                         <Font name="Bauhaus 93" size="1.0" />
                      </font>

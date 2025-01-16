@@ -43,7 +43,7 @@ public class ParametreController {
 
         if (metier.isEmpty()) {
             metierErrorLabel.setText("Le champ 'Métier' est vide !");
-            metierErrorLabel.setStyle("-fx-text-fill: red;"); // Texte rouge pour les erreur
+            metierErrorLabel.setStyle("-fx-text-fill: red;"); // Texte rouge pour les erreurs
             return;
         }
 
