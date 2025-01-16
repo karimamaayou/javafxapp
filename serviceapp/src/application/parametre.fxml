@@ -19,9 +19,9 @@
       <HBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
          <children>
             <!-- Form Section -->
-            <VBox alignment="CENTER" prefHeight="700.0" prefWidth="400.0" spacing="15.0">
+            <VBox alignment="CENTER" prefHeight="600.0" prefWidth="238.0" spacing="15.0">
                <children>
-                  <Label prefHeight="74.0" prefWidth="242.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text=" Ajouter parametres">
+                  <Label prefHeight="74.0" prefWidth="78.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Paramètres">
                      <font>
                         <Font name="Bauhaus 93" size="1.0" />
                      </font>
@@ -30,31 +30,67 @@
                   <VBox spacing="10.0">
                      <!-- Employee Name -->
                      <VBox>
-                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter Ville" />
+                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter Ville">
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding></Label>
                         <HBox prefHeight="29.0" prefWidth="360.0" spacing="10.0">
-                           <TextField fx:id="villeField" prefHeight="25.0" prefWidth="165.0" promptText="ville" />
-                           <Button fx:id="addButtonvilleID" mnemonicParsing="false" onAction="#addVille" style="-fx-background-color: #5687FD;" text="Ajouter">
-                              <graphic>
-                                 <FontAwesomeIcon glyphName="PLUS" />
-                              </graphic>
-                           </Button>
+                           <TextField fx:id="villeField" prefHeight="27.0" prefWidth="200.0" promptText="ville" />
                         </HBox>
                         <Label fx:id="villeErrorLabel" textFill="RED" />
+                        <Button fx:id="addButtonvilleID" maxHeight="25.0" mnemonicParsing="false" onAction="#addVille" prefWidth="200.0" style="-fx-background-color: #5687FD;" text="Ajouter" textFill="WHITE">
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="PLUS" />
+                           </graphic>
+                           <VBox.margin>
+                              <Insets top="2.0" />
+                           </VBox.margin>
+                        </Button>
                      </VBox>
                      <VBox>
                         <children>
-                           <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter Metier" />
+                           <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter Metier">
+                              <padding>
+                                 <Insets bottom="5.0" />
+                              </padding></Label>
                            <HBox prefHeight="29.0" prefWidth="360.0" spacing="10.0">
                               <children>
-                                 <TextField fx:id="metierField" prefHeight="25.0" prefWidth="165.0" promptText="metier" />
-                                 <Button fx:id="addButtonmetierID" mnemonicParsing="false" onAction="#addMetier" style="-fx-background-color: #5687FD;" text="Ajouter">
-                                    <graphic>
-                                       <FontAwesomeIcon glyphName="PLUS" />
-                                    </graphic>
-                                 </Button>
+                                 <TextField fx:id="metierField" prefHeight="27.0" prefWidth="200.0" promptText="metier" />
                               </children>
                            </HBox>
                            <Label fx:id="metierErrorLabel" textFill="RED" />
+                           <Button fx:id="addButtonmetierID" mnemonicParsing="false" onAction="#addMetier" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #5687FD;" text="Ajouter" textFill="WHITE">
+                              <graphic>
+                                 <FontAwesomeIcon fill="WHITE" glyphName="PLUS" />
+                              </graphic>
+                           </Button>
+                        </children>
+                     </VBox>
+                     <VBox>
+                        <children>
+                           <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Changer Mote de passe">
+                              <padding>
+                                 <Insets bottom="5.0" />
+                              </padding>
+                           </Label>
+                           <Label fx:id="successMessage" />
+                           <HBox prefHeight="29.0" prefWidth="360.0" spacing="10.0">
+                              <children>
+                                 <TextField fx:id="newPassword" prefHeight="27.0" prefWidth="200.0" promptText="Nouveau mot de passe" />
+                              </children>
+                           </HBox>
+                           <Label fx:id="newPasswordError" textFill="RED" />
+                           <HBox prefHeight="29.0" prefWidth="360.0" spacing="10.0">
+                              <children>
+                                 <TextField fx:id="passwordConfirmation" prefHeight="27.0" prefWidth="200.0" promptText="Confirmation" />
+                              </children>
+                           </HBox>
+                           <Label fx:id="passwordConfirmationError" textFill="RED" />
+                           <Button fx:id="changerButtonID" mnemonicParsing="false" onAction="#changePassword" prefWidth="200.0" style="-fx-background-color: #5687FD;" text="Changer" textFill="WHITE">
+                              <VBox.margin>
+                                 <Insets top="1.0" />
+                              </VBox.margin>
+                           </Button>
                         </children>
                      </VBox>
                   </VBox>

@@ -33,7 +33,7 @@ public class LoginController<ActionEvent> {
     @FXML
     private Label password_error_label;
 
-    
+ 
     
     String email ="admin@gmail.com";
     String hashedPassword = "$2a$10$27LmedafpwyTGqSXlZWF0uu8lkH/ma4EXi57OihssGj6pGLY5yI3K"; //hashed password
