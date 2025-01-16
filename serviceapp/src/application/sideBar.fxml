@@ -64,6 +64,14 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
+            <Button fx:id="viewParametreButtonID" alignment="TOP_LEFT" graphicTextGap="2.0" mnemonicParsing="false" onAction="#viewParametreButton" prefHeight="25.0" prefWidth="155.0" styleClass="button-hover" text="Paramètres" textFill="WHITE">
+               <graphic>
+                  <FontAwesomeIcon fx:id="icon6" fill="WHITE" glyphName="COG" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </VBox>
       <VBox alignment="BOTTOM_LEFT" maxHeight="3000.0" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">

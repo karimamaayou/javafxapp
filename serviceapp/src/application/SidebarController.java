@@ -37,6 +37,9 @@ public class SidebarController {
     private FontAwesomeIcon icon5;
     
     @FXML
+    private FontAwesomeIcon icon6;
+    
+    @FXML
     private Button logOutButtonID;
     @FXML
     private Button viewDashBoardButtonID;
@@ -50,6 +53,9 @@ public class SidebarController {
 
     @FXML
     private Button viewReservationsButtonID;
+    
+    @FXML
+    private Button viewParametreButtonID;
 
     @FXML
     private ImageView logo;
@@ -59,7 +65,7 @@ public class SidebarController {
     public void initialize() {
     	
     
-
+ 
     
     Image logoImage = new Image(getClass().getResource("resources/images/logo.png").toExternalForm());
     logo.setImage(logoImage);
@@ -81,6 +87,10 @@ public class SidebarController {
     } else if (activeButton.equals("viewHistorique")) {
     	viewHistoriqueButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
     	icon5.setFill(Color.web("#120cc9"));
+    }
+    else if (activeButton.equals("viewParametre")) {
+    	viewParametreButtonID.setStyle("-fx-background-color: #FFFFFF;-fx-text-fill: #120cc9;");
+    	icon6.setFill(Color.web("#120cc9"));
     }
     
     iconHover();
@@ -118,6 +128,12 @@ public class SidebarController {
     	    viewHistoriqueButtonID.setOnMouseEntered(event -> icon5.setFill(Color.web("#120cc9")));
     	    viewHistoriqueButtonID.setOnMouseExited(event -> icon5.setFill(Color.web("#ffffff")));
     	}
+    	if(!activeButton.equals("viewParametre")) {
+    		
+    		viewParametreButtonID.setOnMouseEntered(event -> icon6.setFill(Color.web("#120cc9")));
+    		viewParametreButtonID.setOnMouseExited(event -> icon6.setFill(Color.web("#ffffff")));
+    	}
+    	
     }
 
     @FXML
@@ -156,6 +172,14 @@ public class SidebarController {
     	
     	activeButton = "viewHistorique";
     	DBUtils.changeScene( event, "historiqueTable.fxml");
+    }
+    
+    @FXML
+    void viewParametreButton(ActionEvent event) {
+    	
+    	activeButton = "viewParametre";
+    	
+
     }
 
     @FXML
