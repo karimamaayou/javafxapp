@@ -173,8 +173,8 @@ public class AddReservationController {
                     ps.executeUpdate();
                 }
 
-                System.out.println("Réservation ajoutée avec succès.");
-                navigateToReservationTable();
+               
+                DBUtils.changeScene( event, "reservationTable.fxml");
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -185,10 +185,6 @@ public class AddReservationController {
     
     
 
-    @FXML
-    void viewReservationButton(ActionEvent event) {
-
-    }
 
     private void loadPrixForPrestataire(String prestataireName) {
         try (Connection connection = MysqlConnection.getDBConnection()) {
@@ -246,14 +242,7 @@ public class AddReservationController {
         }
     }
 
-    private void navigateToReservationTable() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("reservationTable.fxml"));
-            HBox root = loader.load();
-            Stage stage = (Stage) ReserverButtonId.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+   
+    	
+    
 }
