@@ -181,6 +181,7 @@ public class SidebarController {
     	DBUtils.changeScene( event, "parametre.fxml");
     	
 
+
     }
 
     @FXML
