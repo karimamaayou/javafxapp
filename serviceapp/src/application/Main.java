@@ -13,16 +13,18 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
           
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("parametre.fxml"));      
-            HBox root = loader.load(); 
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("table.css").toExternalForm());           
+            // Charger le fichier FXML avec un HBox comme racine
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard.fxml"));
+           //  FXMLLoader loader = new FXMLLoader(getClass().getResource("addPrestataireForm.fxml"));
+            HBox root = loader.load(); // Charger l'FXML dans un HBox
+
+            // Créer la scène et ajouter le HBox
+            Scene scene = new Scene(root, 900, 700); // Définir la taille de la scène
+         //   scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm()); // Ajouter les styles CSS
+
+            // Définir la scène et afficher la fenêtre
             primaryStage.setScene(scene);
-            primaryStage.setMaximized(true);
-            primaryStage.centerOnScreen();
             primaryStage.show();
-            
         } catch (Exception e) {
             e.printStackTrace();
         }

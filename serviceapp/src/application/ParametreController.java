@@ -11,14 +11,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 public class ParametreController {
 
     @FXML
     private Button addButtonmetierID;
-    @FXML
-    private Button changerButtonID;
+
     @FXML
     private Button addButtonvilleID;
 
@@ -33,17 +30,6 @@ public class ParametreController {
 
     @FXML
     private TextField villeField;
-    
-    @FXML
-    private TextField newPassword;
-    @FXML
-    private Label newPasswordError;
-    @FXML
-    private TextField passwordConfirmation;
-    @FXML
-    private Label passwordConfirmationError;
-    @FXML
-    private Label successMessage;
 
     @FXML
     public void initialize() {
@@ -59,18 +45,6 @@ public class ParametreController {
             if (!newValue.isEmpty()) {
                 villeErrorLabel.setText("");
                 villeField.getStyleClass().remove("error"); // Supprime une classe CSS (optionnel)
-            }
-        });
-        newPassword.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-            	newPasswordError.setText("");
-                newPassword.getStyleClass().remove("error"); // Supprime une classe CSS (optionnel)
-            }
-        });
-        passwordConfirmation.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-            	passwordConfirmationError.setText("");
-                passwordConfirmation.getStyleClass().remove("error"); // Supprime une classe CSS (optionnel)
             }
         });
     }
@@ -161,63 +135,5 @@ public class ParametreController {
             villeErrorLabel.setStyle("-fx-text-fill: red;");
             e.printStackTrace();
         }
-    }
-    
-
-    @FXML
-    void changePassword(ActionEvent event) {
-    	String password = newPassword.getText().trim();
-    	String confirmationPassword = passwordConfirmation.getText().trim();
-    	
-        if (confirmationPassword.isEmpty() && password.isEmpty()) {
-        	newPasswordError.setText("Le champ est vide !");
-        	newPasswordError.setStyle("-fx-text-fill: red;");
-        	passwordConfirmationError.setText("Le champ est vide !");
-        	passwordConfirmationError.setStyle("-fx-text-fill: red;");
-            return;
-        }
-        if (password.isEmpty()) {
-        	newPasswordError.setText("Le champ est vide !");
-        	newPasswordError.setStyle("-fx-text-fill: red;");
-            return;
-        }
-        if (confirmationPassword.isEmpty()) {
-        	passwordConfirmationError.setText("Le champ est vide !");
-        	passwordConfirmationError.setStyle("-fx-text-fill: red;");
-            return;
-        }
-        // Check password length (for example, minimum 8 characters)
-        if (password.length() < 8) {
-            newPasswordError.setText("Le mot de passe est trop court!");
-            newPasswordError.setStyle("-fx-text-fill: red;");
-            passwordConfirmationError.setText("");
-            return;
-        }
-        // Check if passwords match
-        if (!password.equals(confirmationPassword)) {
-            passwordConfirmationError.setText("Mots de passe différents!");
-            passwordConfirmationError.setStyle("-fx-text-fill: red;");
-            newPasswordError.setText("Mots de passe différents!");
-            newPasswordError.setStyle("-fx-text-fill: red;");
-            return;
-        }
-        
-        String hashedPassword = BCrypt.hashpw(confirmationPassword, BCrypt.gensalt());
-        
-        try (Connection connection = MysqlConnection.getDBConnection()) {
-        	
-        	String updatePassword = "update user set password = ? ";
-        	PreparedStatement updateStatement = connection.prepareStatement(updatePassword);
-        	updateStatement.setString(1, hashedPassword);
-        	updateStatement.executeUpdate();
-        	successMessage.setText("Le mot de passe a été changé !");
-        	successMessage.setStyle("-fx-text-fill: green;");
-        	
-        }catch(Exception e) {
-        	e.printStackTrace();
-        }
-        
-   
-
     }
 }
