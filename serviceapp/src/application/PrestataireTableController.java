@@ -48,6 +48,9 @@ public class PrestataireTableController {
 	@FXML
 	private Button modifierButtonID;
 	
+    @FXML
+    private Button refrechButtonID;
+	
 
 	@FXML
 	private TableColumn<Prestataire, String> nomColumn;
@@ -104,6 +107,7 @@ public class PrestataireTableController {
 		tarifColumn.setCellValueFactory(new PropertyValueFactory<>("tarif"));
 		
 
+
 		// Charger tous les prestataires
 		getAllPrestataire();
 
@@ -142,6 +146,39 @@ public class PrestataireTableController {
 	        // Mettre à jour la pagination pour initialiser l'affichage
 	        updatePagination();
 	}
+	
+    @FXML
+    void refrechDisponiblite(ActionEvent event) {
+        // Requête SQL pour mettre à jour la disponibilité des prestataires en fonction des réservations
+        String updateSQL = "UPDATE prestataire p " +
+                "JOIN (SELECT p.prestataire_id, COUNT(r.reservation_id) as nbr " +
+                "       FROM prestataire p " +
+                "       LEFT JOIN reservation r USING(prestataire_id) " +
+                "       GROUP BY p.prestataire_id) AS reservations " +
+                "ON p.prestataire_id = reservations.prestataire_id " +
+                "SET p.disponibilite = CASE " +
+                "WHEN reservations.nbr > 0 THEN 0 " +
+                "ELSE 1 END;";
+
+        // Connexion à la base de données
+        try (Connection connection = MysqlConnection.getDBConnection();
+             PreparedStatement ps = connection.prepareStatement(updateSQL)) {
+            
+            // Exécuter la requête de mise à jour
+            int rowsAffected = ps.executeUpdate();
+            
+            // Vérifier si des lignes ont été affectées
+            if (rowsAffected > 0) {
+                // Si des prestataires ont été mis à jour, rafraîchir les données de la table
+                loadAllPrestataires();
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Vous pouvez loguer l'erreur ou gérer l'exception de manière appropriée sans alerter l'utilisateur
+        }
+
+    }
 
 	public void getAllPrestataire() {
 		prestatireList.clear();

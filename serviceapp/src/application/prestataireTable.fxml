@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.PrestataireTableController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.PrestataireTableController">
    <children>
       <fx:include source="sideBar.fxml" />
       <VBox HBox.hgrow="ALWAYS">
@@ -32,6 +32,14 @@
                   </HBox>
                   <HBox alignment="BOTTOM_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <Button fx:id="refrechButtonID" mnemonicParsing="false" onAction="#refrechDisponiblite" style="-fx-background-color: #5687FD;" text="Refrech" textFill="WHITE">
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="ROTATE_RIGHT" />
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
                         <Button fx:id="ajouterButtonID" layoutX="773.0" layoutY="241.0" mnemonicParsing="false" onAction="#ajouterPrestataire" style="-fx-background-color: #5687FD;" text="Ajouter" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
