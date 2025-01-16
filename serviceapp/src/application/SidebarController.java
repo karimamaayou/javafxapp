@@ -197,20 +197,7 @@ public class SidebarController {
         //if he chosed ok
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			
-
-			try {
-				// Load the FXML file
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
-				HBox root = loader.load();
-
-				// Get the current stage (window) and set the new scene
-				Stage stage = (Stage) logOutButtonID.getScene().getWindow();
-				
-				stage.setScene(new Scene(root));
-				stage.centerOnScreen();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			DBUtils.changeScene( event, "loginPage.fxml");
 
 		} 
 	
