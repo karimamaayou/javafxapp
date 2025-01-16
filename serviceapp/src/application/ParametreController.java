@@ -37,6 +37,34 @@ public class ParametreController {
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";
 
+    
+    
+    
+    
+    @FXML
+    public void initialize() {
+        // Ajoute des listeners pour effacer les messages d'erreur lorsque l'utilisateur commence à écrire
+        metierField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                metierErrorLabel.setText("");
+                metierField.getStyleClass().remove("error"); // Supprime une classe CSS (optionnel)
+            }
+        });
+
+        villeField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                villeErrorLabel.setText("");
+                villeField.getStyleClass().remove("error"); // Supprime une classe CSS (optionnel)
+            }
+        });
+    }
+    
+    
+    
+    
+    
+    
+    
     @FXML
     void addMetier(ActionEvent event) {
         String metier = metierField.getText().trim();

@@ -57,16 +57,16 @@
             </HBox>
             <TableView fx:id="hestoriqueTable" prefHeight="253.0" prefWidth="495.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="nomCompleteClientColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="nom client" />
-                  <TableColumn fx:id="telephoneClientColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="telephone" />
-                  <TableColumn fx:id="nomCompletePrestataireColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="nom Prestataire" />
-                  <TableColumn fx:id="matierPrestataireColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="matier " />
-                  <TableColumn fx:id="telephonePrestataireColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="telephone" />
-                  <TableColumn fx:id="dateDebutColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="date debut" />
-                  <TableColumn fx:id="dateFinColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="date fin" />
-                  <TableColumn fx:id="dateArchiveColumn" minWidth="0.0" prefWidth="64.6666259765625" style="-fx-background-color: #E8E8E8;" text="date archive" />
-                  <TableColumn fx:id="prix_Column" prefWidth="66.66668701171875" style="-fx-background-color: #E8E8E8;" text="prix" />
-                  <TableColumn fx:id="statutColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8;" text="statut" />
+                  <TableColumn fx:id="nomCompleteClientColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8; -fx-alignment: center;" text="nom client" />
+                  <TableColumn fx:id="telephoneClientColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8; -fx-alignment: center;" text="telephone" />
+                  <TableColumn fx:id="nomCompletePrestataireColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8; -fx-alignment: center;" text="nom Prestataire" />
+                  <TableColumn fx:id="matierPrestataireColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8; -fx-alignment: center;" text="matier " />
+                  <TableColumn fx:id="telephonePrestataireColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8; -fx-alignment: center;" text="telephone" />
+                  <TableColumn fx:id="dateDebutColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8; -fx-alignment: center;" text="date debut" />
+                  <TableColumn fx:id="dateFinColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8; -fx-alignment: center;" text="date fin" />
+                  <TableColumn fx:id="dateArchiveColumn" minWidth="0.0" prefWidth="64.6666259765625" style="-fx-background-color: #E8E8E8; -fx-alignment: center;" text="date archive" />
+                  <TableColumn fx:id="prix_Column" prefWidth="66.66668701171875" style="-fx-background-color: #E8E8E8; -fx-alignment: center;" text="prix" />
+                  <TableColumn fx:id="statutColumn" prefWidth="75.0" style="-fx-background-color: #E8E8E8; -fx-alignment: center;" text="statut" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
