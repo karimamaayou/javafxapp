@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -7,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <HBox prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ParametreController">
    <children>
@@ -21,7 +21,7 @@
             <!-- Form Section -->
             <VBox alignment="CENTER" prefHeight="700.0" prefWidth="400.0" spacing="15.0">
                <children>
-                  <Label prefHeight="57.0" prefWidth="153.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Parametre">
+                  <Label prefHeight="74.0" prefWidth="242.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text=" Ajouter paramètres">
                      <font>
                         <Font name="Bauhaus 93" size="1.0" />
                      </font>
@@ -31,17 +31,40 @@
                      <!-- Employee Name -->
                      <VBox>
                         <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter Ville" />
-                        <HBox prefHeight="25.0" prefWidth="327.0" spacing="10.0">
-                           <TextField prefHeight="25.0" prefWidth="165.0" promptText="Prénom" />
-                           <Button mnemonicParsing="false" text="Button" />
+                        <HBox prefHeight="29.0" prefWidth="360.0" spacing="10.0">
+                           <TextField fx:id="villeField" prefHeight="25.0" prefWidth="165.0" promptText="ville" />
+                           <Button fx:id="addButtonvilleID" mnemonicParsing="false" onAction="#addVille" style="-fx-background-color: #5687FD;" text="Ajouter">
+                              <graphic>
+                                 <FontAwesomeIcon glyphName="PLUS" />
+                              </graphic>
+                           </Button>
                         </HBox>
-                        <Label style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
+                        <Label fx:id="villeErrorLabel" textFill="RED" />
+                     </VBox>
+                     <VBox>
+                        <children>
+                           <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter Metier" />
+                           <HBox prefHeight="29.0" prefWidth="360.0" spacing="10.0">
+                              <children>
+                                 <TextField fx:id="metierField" prefHeight="25.0" prefWidth="165.0" promptText="metier" />
+                                 <Button fx:id="addButtonmetierID" mnemonicParsing="false" onAction="#addMetier" style="-fx-background-color: #5687FD;" text="Ajouter">
+                                    <graphic>
+                                       <FontAwesomeIcon glyphName="PLUS" />
+                                    </graphic>
+                                 </Button>
+                              </children>
+                           </HBox>
+                           <Label fx:id="metierErrorLabel" textFill="RED" />
+                        </children>
                      </VBox>
                   </VBox>
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </VBox>
          </children>
       </HBox>
