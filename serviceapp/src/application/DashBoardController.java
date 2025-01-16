@@ -166,9 +166,9 @@ public class DashBoardController {
         String sql = """
             SELECT 
                 EXTRACT(MONTH FROM r.date_debut) AS month,
-                COUNT(r.reservation_id) AS total_reservations
+                COUNT(r.historique_id) AS total_reservations
             FROM 
-                reservation r
+                historique r
             GROUP BY 
                 EXTRACT(MONTH FROM r.date_debut)
             ORDER BY
@@ -243,16 +243,22 @@ public class DashBoardController {
 		
 		return clientsParVille;
     }
+    
     public Map<String,Integer> getStatutByReservation(){
+    	
     	Map<String,Integer> statutParReservation= new HashMap<>();
     	Connection connection = MysqlConnection.getDBConnection();
-		String sql = "Select statut,count(reservation_id) as nbr from reservation join statut using(statut_id) group by statut;";
-
+    	// number of encour statut
+		String sql  = "Select statut,count(reservation_id) as nbr from reservation join statut using(statut_id) group by statut;";
+        String sql2 ="select statut,count(historique_id) as nbr from historique group by statut;";
 		try {
 
 			PreparedStatement ps = connection.prepareStatement(sql);
+			PreparedStatement ps2 = connection.prepareStatement(sql2);
+			
 
 			ResultSet results = ps.executeQuery();
+			ResultSet results2 = ps2.executeQuery();
 
 			while (results.next()) {
 				
@@ -260,6 +266,13 @@ public class DashBoardController {
 				int nombreStatut = results.getInt("nbr");
 				statutParReservation.put(statut,nombreStatut);
 			}
+			while (results2.next()) {
+				
+				String statut = results2.getString("statut");
+				int nombreStatut = results2.getInt("nbr");
+				statutParReservation.put(statut,nombreStatut);
+			}
+			
 			
 
 		} catch (Exception e) {
