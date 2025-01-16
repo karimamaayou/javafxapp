@@ -14,14 +14,17 @@
 <HBox prefHeight="400.0" prefWidth="600.0" spacing="0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
    
    <!-- Section gauche avec couleur et logo -->
-   <VBox alignment="CENTER" maxWidth="380.0" prefHeight="400.0" prefWidth="199.0" style="-fx-background-color: #5687FD;" HBox.hgrow="ALWAYS">
+   <VBox alignment="CENTER" maxWidth="380.0" minHeight="380.0" prefHeight="400.0" prefWidth="199.0" style="-fx-background-color: #5687FD;" HBox.hgrow="ALWAYS">
       <children>
-         <ImageView fitHeight="172.0" fitWidth="181.0">
+         <ImageView fx:id="logo" fitHeight="100.0" fitWidth="100.0">
             <image>
                <Image url="@../../../../../Desktop/WhatsApp%20Image%202024-11-23%20à%2019.16.21_69a6f61d.jpg" />
             </image>
          </ImageView>
-         <Label fx:id="BladnaServices" text="Bladna Services " />
+         <Label fx:id="BladnaServices" text="Bladna Services " textFill="WHITE">
+            <font>
+               <Font size="16.0" />
+            </font></Label>
       </children>
    </VBox>
    
