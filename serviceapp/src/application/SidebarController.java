@@ -178,6 +178,7 @@ public class SidebarController {
     void viewParametreButton(ActionEvent event) {
     	
     	activeButton = "viewParametre";
+    	DBUtils.changeScene( event, "parametre.fxml");
     	
 
     }

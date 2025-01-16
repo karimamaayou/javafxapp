@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ParametreController">
+   <children>
+      <!-- Sidebar -->
+      <fx:include source="sideBar.fxml" />
+
+      <!-- Main Content -->
+      <HBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
+         <children>
+            <!-- Form Section -->
+            <VBox alignment="CENTER" prefHeight="700.0" prefWidth="400.0" spacing="15.0">
+               <children>
+                  <Label prefHeight="57.0" prefWidth="153.0" style="-fx-font-size: 14; -fx-font-weight: bold;" text="Parametre">
+                     <font>
+                        <Font name="Bauhaus 93" size="1.0" />
+                     </font>
+                  </Label>
+                  <!-- Form Fields -->
+                  <VBox spacing="10.0">
+                     <!-- Employee Name -->
+                     <VBox>
+                        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="Ajouter Ville" />
+                        <HBox prefHeight="25.0" prefWidth="327.0" spacing="10.0">
+                           <TextField prefHeight="25.0" prefWidth="165.0" promptText="Prénom" />
+                           <Button mnemonicParsing="false" text="Button" />
+                        </HBox>
+                        <Label style="-fx-text-fill: red; -fx-font-size: 12;" text="" />
+                     </VBox>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</HBox>
