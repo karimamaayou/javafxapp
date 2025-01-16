@@ -39,6 +39,8 @@ public class LoginController<ActionEvent> {
     String hashedPassword = "$2a$10$27LmedafpwyTGqSXlZWF0uu8lkH/ma4EXi57OihssGj6pGLY5yI3K"; //hashed password
     //String hashedPassword = BCrypt.hashpw(passwordToHash, BCrypt.gensalt());
     
+    
+    
     public void saveUser() {
         try (Connection conn = MysqlConnection.getDBConnection()) {
             if (conn != null) {

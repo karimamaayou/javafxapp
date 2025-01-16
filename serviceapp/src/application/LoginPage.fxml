@@ -14,6 +14,7 @@
 <HBox prefHeight="400.0" prefWidth="600.0" spacing="0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
     
     
+    
    <!-- Section gauche avec couleur et logo -->
    <VBox alignment="CENTER" maxWidth="380.0" minHeight="380.0" prefHeight="400.0" prefWidth="199.0" style="-fx-background-color: #5687FD;" HBox.hgrow="ALWAYS">
       <children>
