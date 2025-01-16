@@ -36,12 +36,13 @@ public class LoginController<ActionEvent> {
  
     
     String email ="admin@gmail.com";
-    String hashedPassword = "$2a$10$27LmedafpwyTGqSXlZWF0uu8lkH/ma4EXi57OihssGj6pGLY5yI3K"; //hashed password
-    //String hashedPassword = BCrypt.hashpw(passwordToHash, BCrypt.gensalt());
+    String passwordToHash="admin1234";
+    String hashedPassword = BCrypt.hashpw(passwordToHash, BCrypt.gensalt());
     
     
     
     public void saveUser() {
+    	
         try (Connection conn = MysqlConnection.getDBConnection()) {
             if (conn != null) {
                 // Check if user with the given email already exists
@@ -56,7 +57,10 @@ public class LoginController<ActionEvent> {
                     PreparedStatement stmt = conn.prepareStatement(sql);
                     stmt.setString(1, email);
                     stmt.setString(2, hashedPassword); // Set the hashed password
+                    stmt.executeUpdate();
+                   
                 }
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,6 +68,8 @@ public class LoginController<ActionEvent> {
     }
     
     public void initialize() {
+        System.out.println(hashedPassword);
+
         Image logoImage = new Image(getClass().getResource("resources/images/logo.png").toExternalForm());
         logo.setImage(logoImage);
          
