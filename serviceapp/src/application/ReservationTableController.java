@@ -376,7 +376,7 @@ public class ReservationTableController {
 				conn.setDoOutput(true);
 				conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-				// Envoyer les données au script PHP
+				
 				try (OutputStream os = conn.getOutputStream()) {
 					os.write(postData.toString().getBytes("UTF-8"));
 				}
